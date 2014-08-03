@@ -1,0 +1,17 @@
+//
+// XYO Build
+//
+// Copyright (c) 2014 Grigore Stefan, <g_stefan@yahoo.com>
+// Created by Grigore Stefan <g_stefan@yahoo.com>
+//
+// The MIT License (MIT) <http://opensource.org/licenses/MIT>
+//
+
+#include "xyo-win-version--rc.hpp"
+#include "xyo-build-version.hpp"
+#include "xyo-build-copyright.hpp"
+
+1  ICON "xyo-build.ico"
+
+XYO_WIN_VERSION_INFO(XYO_BUILD,"xyo-build.exe","XYO Build System");
+

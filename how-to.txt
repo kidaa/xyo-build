@@ -1,0 +1,45 @@
+
+Using XYO Build
+---------------
+
+Edit xyo-build-workspace-win32.cmd change MySoftware with your base path.
+
+Path structure is:
+
+MySoftware/
+	Bin - place here common software scripts
+	Certificate - place here your scripts for digital signature
+	Prebuild - place here software that does not require installation (linke gnu make etc.)		
+	Repository - place where your build/executables will reside
+	Repository/[platform] - platform based software (can be win32, win64, etc.)
+		.build - build based object files
+		.dependency - script files to resolve projects depenedency
+		.unify - all your software in one place (only if you use unify build)
+		.uninstall - script files with uninstall information (required for clean-install, clean-all)
+
+		other folders based on solution names (if build with install)
+
+	
+Build commands are:
+
+	build 		  	- build current solution
+	clean 		  	- clean solution
+	unify 		  	- install solution in unify folder
+	install		  	- install solution in own folder
+	sign 		  	- digital sign binary files
+	uninstall 	  	- deinstall solution
+	deinstall 	  	- deinstall solution
+	clean-all 	  	- clean + uninstall
+	build-x-unify 	  	- build + unify
+	version 	  	- update version files
+	release 	  	- version + build
+	build-x-install   	- build + install
+	reinstall 	  	- clean-install + install
+	debug 		  	- debug build
+	debug-x-unify 	  	- install debug solution in unify folder
+	debug-x-instal 	  	- install debug solution in own folder
+	rebuild 	  	- clean + build
+	licence			- list licences used by projects
+	build-x-sign-x-unify    
+	build-x-sign-x-install 
+

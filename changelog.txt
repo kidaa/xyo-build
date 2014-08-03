@@ -1,0 +1,7 @@
+2014.07.21
++ added --local, this will copy taget to local directory after build
+
+2014.06.23
+* small bug in make script (required more build steps to update all targets)
+
+--=*=--
