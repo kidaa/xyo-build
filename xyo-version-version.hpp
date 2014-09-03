@@ -1,29 +1,29 @@
 #ifndef XYO_VERSION_VERSION_HPP
 #define XYO_VERSION_VERSION_HPP
 
-#define XYO_VERSION_VERSION_ABCD      1,1,0,16
+#define XYO_VERSION_VERSION_ABCD      1,2,0,18
 #define XYO_VERSION_VERSION_A         1
-#define XYO_VERSION_VERSION_B         1
+#define XYO_VERSION_VERSION_B         2
 #define XYO_VERSION_VERSION_C         0
-#define XYO_VERSION_VERSION_D         16
-#define XYO_VERSION_VERSION_STR_ABCD  "1.1.0.16"
-#define XYO_VERSION_VERSION_STR       "1.1.0"
-#define XYO_VERSION_VERSION_STR_BUILD "16"
-#define XYO_VERSION_VERSION_BUILD     16
-#define XYO_VERSION_VERSION_HOUR      2
-#define XYO_VERSION_VERSION_MINUTE    30
-#define XYO_VERSION_VERSION_SECOND    46
-#define XYO_VERSION_VERSION_DAY       23
-#define XYO_VERSION_VERSION_MONTH     6
+#define XYO_VERSION_VERSION_D         18
+#define XYO_VERSION_VERSION_STR_ABCD  "1.2.0.18"
+#define XYO_VERSION_VERSION_STR       "1.2.0"
+#define XYO_VERSION_VERSION_STR_BUILD "18"
+#define XYO_VERSION_VERSION_BUILD     18
+#define XYO_VERSION_VERSION_HOUR      23
+#define XYO_VERSION_VERSION_MINUTE    27
+#define XYO_VERSION_VERSION_SECOND    36
+#define XYO_VERSION_VERSION_DAY       2
+#define XYO_VERSION_VERSION_MONTH     9
 #define XYO_VERSION_VERSION_YEAR      2014
-#define XYO_VERSION_VERSION_STR_DATETIME "2014-06-23 02:30:46"
+#define XYO_VERSION_VERSION_STR_DATETIME "2014-09-02 23:27:36"
 
 #ifndef XYO_RC
 
-namespace XYO {
-	namespace Version {
+namespace XYO{
+	namespace Version{
 
-		class Version {
+		class Version{
 			public:
 				static const char *getABCD();
 				static const char *getA();

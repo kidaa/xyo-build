@@ -15,9 +15,10 @@ set SRC=%SRC% %XLIB%xyo-xy-xthread--os-win.cpp
 
 set XLIB= ..\libxyo-xo\
 set SRC=%SRC% %XLIB%xyo-xo-error.cpp
-set SRC=%SRC% %XLIB%xyo-xo-stringbase.cpp
-set SRC=%SRC% %XLIB%xyo-xo-stringreference.cpp
-set SRC=%SRC% %XLIB%xyo-xo-stringx.cpp
+set SRC=%SRC% %XLIB%xyo-xo-stringbasebyte.cpp
+set SRC=%SRC% %XLIB%xyo-xo-stringreferencebyte.cpp
+set SRC=%SRC% %XLIB%xyo-xo-stringbytex.cpp
+set SRC=%SRC% %XLIB%xyo-xo-string.cpp
 set SRC=%SRC% %XLIB%xyo-xo-file.cpp
 set SRC=%SRC% %XLIB%xyo-xo-memoryfileread.cpp
 set SRC=%SRC% %XLIB%xyo-xo-shell--os-win.cpp

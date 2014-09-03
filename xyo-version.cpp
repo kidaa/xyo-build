@@ -171,16 +171,16 @@ void Application::setVar(TRedBlackTree<String, String > &myVar) {
 void Application::getVar(TRedBlackTree<String, String > &myVar) {
 	String value;
 	if (myVar.get("version", value)) {
-		sscanf(value.value(), "%d.%d.%d", &versionA, &versionB, &versionC);
+		sscanf(value, "%d.%d.%d", &versionA, &versionB, &versionC);
 	};
 	if (myVar.get("build", value)) {
-		sscanf(value.value(), "%d", &versionD);
+		sscanf(value, "%d", &versionD);
 	};
 	if (myVar.get("date", value)) {
-		sscanf(value.value(), "%04d-%02d-%02d", &versionYear, &versionMon, &versionMDay);
+		sscanf(value, "%04d-%02d-%02d", &versionYear, &versionMon, &versionMDay);
 	};
 	if (myVar.get("time", value)) {
-		sscanf(value.value(), "%02d:%02d:%02d", &versionHour, &versionMin, &versionSec);
+		sscanf(value, "%02d:%02d:%02d", &versionHour, &versionMin, &versionSec);
 	};
 };
 

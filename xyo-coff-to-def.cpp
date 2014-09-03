@@ -22,6 +22,9 @@ using namespace XYO;
 using namespace XYO::XY;
 using namespace XYO::XO;
 
+namespace{
+using XYO::byte;
+
 class Application :
 	public virtual IMain {
 		XYO_XY_DEFINE_PRIVATE_COPY(Application);
@@ -152,7 +155,7 @@ int Application::generateDefFile(TRedBlackTreeOne<String > &inList, PTSTR pszFil
 			if (mode == 0) {
 				if (StringBase::beginWith(i->value, "_")) {
 					size_t index;
-					if(StringBase::indexOf2(i->value,"@",index)) {
+					if(StringBase::indexOf(i->value, "@",index)) {
 						fwrite(i->value.value(), 1, i->value.length(), out);
 					} else {
 						fwrite(i->value.index(1), 1, i->value.length() - 1, out);
@@ -248,7 +251,7 @@ int Application::main(int cmdN, char *cmdS[]) {
 	for (coff = coffList.begin(); coff; coff = coff->succesor()) {
 		if(coff->value[0]=='@') {
 			FILE *in;
-			in=fopen(&(coff->value.value())[1],"rb");
+			in=fopen((char *)&(coff->value.value())[1],"rb");
 			if(in!=NULL) {
 				int k;
 				char buffer[1024];
@@ -288,6 +291,8 @@ void Application::memoryInit() {
 	String::memoryInit();
 	Error::memoryInit();
 	TMemory<TRedBlackTreeOne<String > >::memoryInit();
+};
+
 };
 
 XYO_XY_MAIN_STD(Application);
