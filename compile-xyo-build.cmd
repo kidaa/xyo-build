@@ -104,6 +104,9 @@ set SRC=%SRC% %XLIB%quantum-script-vm-libstdcsv.cpp
 set SRC=%SRC% %XLIB%quantum-script-vm-libstdurl.cpp
 set SRC=%SRC% %XLIB%quantum-script-vm-libstdutf16.cpp
 set SRC=%SRC% %XLIB%quantum-script-vm-libstdutf32.cpp
+set SRC=%SRC% %XLIB%quantum-script-vm-libstdsha256.cpp
+set SRC=%SRC% %XLIB%quantum-script-vm-libstdsha512.cpp
+
 
 set XLIB= ..\libxyo-xy\
 set SRC=%SRC% %XLIB%xyo-xy-object.cpp
@@ -143,6 +146,8 @@ set SRC=%SRC% %XLIB%xyo-xo-socket--os-win.cpp
 set SRC=%SRC% %XLIB%xyo-xo-net--os-win.cpp
 set SRC=%SRC% %XLIB%xyo-xo-ip4.cpp
 set SRC=%SRC% %XLIB%xyo-xo-ipaddress4.cpp
+set SRC=%SRC% %XLIB%xyo-xo-sha256hash.cpp
+set SRC=%SRC% %XLIB%xyo-xo-sha512hash.cpp
 
 set INC=
 set INC=

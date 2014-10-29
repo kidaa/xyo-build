@@ -4,7 +4,6 @@ set SRC=
 set SRC=%SRC% xyo-version.cpp
 set SRC=%SRC% xyo-version-copyright.cpp
 set SRC=%SRC% xyo-version-licence.cpp
-set SRC=%SRC% xyo-version-version.cpp
 
 set XLIB= ..\libxyo-xy\
 set SRC=%SRC% %XLIB%xyo-xy-object.cpp
@@ -36,6 +35,8 @@ set DEF= %DEF% /DXYO_MACHINE_32BIT
 set DEF= %DEF% /DLIBXYO_XY_INTERNAL
 set DEF= %DEF% /DLIBXYO_XO_INTERNAL
 set DEF= %DEF% /DXYO_SINGLE_THREAD
+
+set DEF= %DEF% /DXYO_VERSION_INTERNAL
 
 rem set DEF= %DEF% /DXYO_MEMORY_LEAK_DETECTOR
 rem set DEF= %DEF% /DXYO_MEMORYPOOL_FORCE_SYSTEM

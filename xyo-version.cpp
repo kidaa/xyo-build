@@ -67,7 +67,7 @@ class Application :
 		void writeToFileXyoC(char *fileName);
 		void writeToFileJs(char *fileName);
 		void writeToFilePhp(char *fileName);
-		bool processFile(char *in, char *out, char **inS, char **outS);
+		bool processFile(char *in, char *out, const char **inS, char **outS);
 		bool doParseFile(char *in, char *out);
 
 		void showUsage();
@@ -521,7 +521,7 @@ void Application::writeToFilePhp(char *fileName) {
 	};
 };
 
-bool Application::processFile(char *in, char *out, char **inS, char **outS) {
+bool Application::processFile(char *in, char *out, const char **inS, char **outS) {
 	FILE *fIn;
 	FILE *fOut;
 	bool ok;
@@ -585,7 +585,7 @@ bool Application::doParseFile(char *in, char *out) {
 	char buf9[16];
 	char buf10[16];
 
-	char *sIn[] = {
+	const char *sIn[] = {
 		"@@_VERSION_A_@@", // 1
 		"@@_VERSION_B_@@", // 2
 		"@@_VERSION_C_@@", // 3

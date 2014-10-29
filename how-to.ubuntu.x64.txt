@@ -1,0 +1,10 @@
+
+Example .bashrc (add to end of file)
+
+XYO_BUILD_PLATFORM="ubuntu-x64-native"; export XYO_BUILD_PLATFORM
+XYO_OS="UNIX64"; export XYO_OS
+XYO_PATH_BASE="${HOME}/"; export XYO_PATH_BASE
+XYO_PATH_REPOSITORY="${XYO_PATH_BASE}Repository/"; export XYO_PATH_REPOSITORY
+XYO_PATH_BIN="${XYO_PATH_REPOSITORY}${XYO_BUILD_PLATFORM}/"; export XYO_PATH_BIN
+PATH="${XYO_PATH_BIN}.unify/bin:${PATH}"; export PATH
+
