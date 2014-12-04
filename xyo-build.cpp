@@ -25,7 +25,7 @@
 
 #include "xyo-build-licence.hpp"
 #include "xyo-build-copyright.hpp"
-#ifndef XYO_BUILD_INTERNAL
+#ifndef XYO_BUILD_NO_VERSION
 #include "xyo-build-version.hpp"
 #endif
 
@@ -89,7 +89,7 @@ bool Application::initExecutive(Executive *executive) {
 	    ) != 0) {
 		return false;
 	};
-	if (executive->compileString("Script.include(\"xyo-build-library/shell.js\");") != 0) {
+	if (executive->compileString("Script.include(\"xyo-build.library/shell.js\");") != 0) {
 		return false;
 	};
 	if (executive->compileString("var Build={};") != 0) {
@@ -103,7 +103,7 @@ bool Application::initExecutive(Executive *executive) {
 };
 
 void Application::showUsage() {
-#ifdef XYO_BUILD_INTERNAL
+#ifdef XYO_BUILD_NO_VERSION
 	printf("XYO Build\n");
 #else
 	printf("XYO Build - version %s build %s [%s]\n", XYO::Build::Version::getVersion(), XYO::Build::Version::getBuild(), XYO::Build::Version::getDatetime());
@@ -180,14 +180,14 @@ int Application::main(int cmdN, char *cmdS[]) {
 	       "};\n"
 	       "BuildError.prototype=new Error();\n"
 	       "function ___main(){\n"
-	       "\tScript.include(\"xyo-build-library/build.js\");\n"
+	       "\tScript.include(\"xyo-build.library/build.js\");\n"
 	       "\tif(Shell.fileExists(\""<<scriptConfig<<"\")){\n"
 	       "\t\tScript.include(\""<<scriptConfig<<"\");\n"
 	       "\t};\n"
-	       "\tScript.include(\"xyo-build-library/make.js\");\n"
-	       "\tScript.include(\"xyo-build-library/project.js\");\n"
-	       "\tScript.include(\"xyo-build-library/solution.js\");\n"
-	       "\tScript.include(\"xyo-build-library/platform.js\");\n"
+	       "\tScript.include(\"xyo-build.library/make.js\");\n"
+	       "\tScript.include(\"xyo-build.library/project.js\");\n"
+	       "\tScript.include(\"xyo-build.library/solution.js\");\n"
+	       "\tScript.include(\"xyo-build.library/platform.js\");\n"
 	       "\tBuild.parseCommandLine();\n"
 	       "\tif(Build.cmdMode()){\n"
 	       "\t}else{\n"

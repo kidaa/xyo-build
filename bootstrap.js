@@ -13,16 +13,16 @@
 
 		.project("xyo-build","install",function() {
 
-			.install("bin","xyo-build-library/shell.js","xyo-build-library");
-			.install("bin","xyo-build-library/make.js","xyo-build-library");
-			.install("bin","xyo-build-library/platform.js","xyo-build-library");
-			.install("bin","xyo-build-library/project.js","xyo-build-library");
-			.install("bin","xyo-build-library/solution.js","xyo-build-library");
-			.install("bin","xyo-build-library/build.js","xyo-build-library");
+			.install("bin","xyo-build.library/shell.js","xyo-build.library");
+			.install("bin","xyo-build.library/make.js","xyo-build.library");
+			.install("bin","xyo-build.library/platform.js","xyo-build.library");
+			.install("bin","xyo-build.library/project.js","xyo-build.library");
+			.install("bin","xyo-build.library/solution.js","xyo-build.library");
+			.install("bin","xyo-build.library/build.js","xyo-build.library");
 			.install("bin","xyo-build.config.js");
 
-			.install("bin","xyo-build-library/platform.win32-msvc-express-native.js","xyo-build-library");
-			.install("bin","xyo-build-library/platform.win64-msvc-express-native.js","xyo-build-library");
+			.install("bin","xyo-build.library/platform.win32-msvc-express-native.js","xyo-build.library");
+			.install("bin","xyo-build.library/platform.win64-msvc-express-native.js","xyo-build.library");
 
 			.install("bin","xyo-build.exe");
 			.install("bin","xyo-version.exe");
@@ -39,15 +39,15 @@
 
 		.project("xyo-build","install",function() {
 
-			.install("bin","xyo-build-library/shell.js","xyo-build-library");
-			.install("bin","xyo-build-library/make.js","xyo-build-library");
-			.install("bin","xyo-build-library/platform.js","xyo-build-library");
-			.install("bin","xyo-build-library/project.js","xyo-build-library");
-			.install("bin","xyo-build-library/solution.js","xyo-build-library");
-			.install("bin","xyo-build-library/build.js","xyo-build-library");
+			.install("bin","xyo-build.library/shell.js","xyo-build.library");
+			.install("bin","xyo-build.library/make.js","xyo-build.library");
+			.install("bin","xyo-build.library/platform.js","xyo-build.library");
+			.install("bin","xyo-build.library/project.js","xyo-build.library");
+			.install("bin","xyo-build.library/solution.js","xyo-build.library");
+			.install("bin","xyo-build.library/build.js","xyo-build.library");
 			.install("bin","xyo-build.config.js");
 
-			.install("bin","xyo-build-library/platform.ubuntu-x64-native.js","xyo-build-library");
+			.install("bin","xyo-build.library/platform.ubuntu-x64-native.js","xyo-build.library");
 
 			.install("bin","xyo-build");
 			.install("bin","xyo-version");

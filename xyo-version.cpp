@@ -21,11 +21,11 @@
 #include "libxyo-xy.hpp"
 #include "libxyo-xo.hpp"
 
-#ifndef XYO_VERSION_INTERNAL
-#include "xyo-version-version.hpp"
-#endif
 #include "xyo-version-licence.hpp"
 #include "xyo-version-copyright.hpp"
+#ifndef XYO_VERSION_NO_VERSION
+#include "xyo-version-version.hpp"
+#endif
 
 using namespace XYO;
 using namespace XYO::XY;
@@ -628,7 +628,7 @@ bool Application::doParseFile(char *in, char *out) {
 };
 
 void Application::showUsage() {
-#ifdef XYO_VERSION_INTERNAL
+#ifdef XYO_VERSION_NO_VERSION
 	printf("xyo-version\n");
 #else
 	printf("xyo-version - version %s build %s [%s]\n", XYO::Version::Version::getVersion(), XYO::Version::Version::getBuild(), XYO::Version::Version::getDatetime());

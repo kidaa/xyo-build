@@ -231,7 +231,7 @@ Platform.includePlatform=function(platformName) {
 		xyoPlatform1_+=".js";
 	};
 	if(xyoPlatform1_.indexOf("platform.")<0) {
-		xyoPlatform1_="xyo-build-library/platform."+xyoPlatform1_;
+		xyoPlatform1_="xyo-build.library/platform."+xyoPlatform1_;
 	};
 	var xyoPlatform2_=Shell.getFilePath(xyoPlatform_);
 	if(xyoPlatform2_) {

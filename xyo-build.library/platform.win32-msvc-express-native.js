@@ -61,10 +61,10 @@ Platform.buildProject=function(solution,project,mode) {
 					return false;
 					break;
 				case "dependency-lib":
-					.writeProjectLocalDependencyLib(solution,project);
+					.writeProjectLocalDependencyLib(solution,project,false);
 					break;
 				case "dependency-dll":
-					.writeProjectLocalDependencyDll(solution,project);
+					.writeProjectLocalDependencyDll(solution,project,false);
 					break;
 				case "dependency-exe":
 					.writeProjectLocalDependencyExe(solution,project);
@@ -260,7 +260,7 @@ Platform.buildLib=function(solution,project) {
 
 	fileLib=.processObjToLib(solution,project,make,fileObjList);
 
-	.writeProjectLocalDependencyLib(solution,project);
+	.writeProjectLocalDependencyLib(solution,project,true);
 
 	make.build(fileLib);
 	if(Build.isLocal_) {
@@ -339,7 +339,7 @@ Platform.buildDll=function(solution,project) {
 
 	fileDll=.processObjToDll(solution,project,make,fileObjList);
 
-	.writeProjectLocalDependencyDll(solution,project);
+	.writeProjectLocalDependencyDll(solution,project,true);
 
 	make.build(fileDll);
 	if(Build.isLocal_) {
@@ -1312,7 +1312,7 @@ Platform.writeProjectLocalDependencyExe=function(solution,project) {
 	Shell.filePutContents(file,content);
 };
 
-Platform.writeProjectLocalDependencyDll=function(solution,project) {
+Platform.writeProjectLocalDependencyDll=function(solution,project,full) {
 	var file;
 	var content;
 
@@ -1321,7 +1321,9 @@ Platform.writeProjectLocalDependencyDll=function(solution,project) {
 	file=.buildPath(solution)+"/"+solution.name_+"."+project.name_+".dll.local.dependency.js";
 	content+=".option(\"library-path\",Platform.buildPathX(\""+solution.name_+"\",\""+Build.variant_+"\"));\n";
 	content+=".option(\"include\",Platform.buildPathX(\""+solution.name_+"\",\""+Build.variant_+"\"));\n";
-	content+=".option(\"library\",\""+project.name_+"\");\n";
+	if(full){
+		content+=".option(\"library\",\""+project.name_+"\");\n";
+	};
 	content+=.processDependencyOption(solution,project,mode,true);
 	content+=.processDependencyProject(solution,project);
 	content+=.processDependency(solution,project);
@@ -1331,7 +1333,7 @@ Platform.writeProjectLocalDependencyDll=function(solution,project) {
 	Shell.filePutContents(file,content);
 };
 
-Platform.writeProjectLocalDependencyLib=function(solution,project) {
+Platform.writeProjectLocalDependencyLib=function(solution,project,full) {
 	var file;
 	var content;
 
@@ -1340,7 +1342,9 @@ Platform.writeProjectLocalDependencyLib=function(solution,project) {
 	file=.buildPath(solution)+"/"+solution.name_+"."+project.name_+".lib.local.dependency.js";
 	content+=".option(\"library-path\",Platform.buildPathX(\""+solution.name_+"\",\""+Build.variant_+"\"));\n";
 	content+=".option(\"include\",Platform.buildPathX(\""+solution.name_+"\",\""+Build.variant_+"\"));\n";
-	content+=".option(\"library\",\""+project.name_+".static\");\n";
+	if(full){
+		content+=".option(\"library\",\""+project.name_+".static\");\n";
+	};
 	content+=.processDependencyOption(solution,project,mode,true);
 	content+=.processDependencyProject(solution,project);
 	content+=.processDependency(solution,project);
@@ -1382,7 +1386,7 @@ Platform.writeProjectDependencyExe=function(solution,project,mode) {
 	Shell.filePutContents(file,content);
 };
 
-Platform.writeProjectDependencyDll=function(solution,project,mode) {
+Platform.writeProjectDependencyDll=function(solution,project,mode,full) {
 	var file;
 	var content;
 
@@ -1392,7 +1396,9 @@ Platform.writeProjectDependencyDll=function(solution,project,mode) {
 	content+=".option(\"path\",Platform.installPathX(\""+solution.name_+"\",\""+mode+"\")+\"/bin\");\n";
 	content+=".option(\"library-path\",Platform.installPathX(\""+solution.name_+"\",\""+mode+"\")+\"/lib\");\n";
 	content+=".option(\"include\",Platform.installPathX(\""+solution.name_+"\",\""+mode+"\")+\"/include\");\n";
-	content+=".option(\"library\",\""+project.name_+"\");\n";
+	if(full){
+		content+=".option(\"library\",\""+project.name_+"\");\n";
+	};
 	content+=.processDependencyOption(solution,project,mode,false);
 	content+=.processDependency(solution,project);
 	content+=.processDependencyLicence(solution,project);
@@ -1401,7 +1407,7 @@ Platform.writeProjectDependencyDll=function(solution,project,mode) {
 	Shell.filePutContents(file,content);
 };
 
-Platform.writeProjectDependencyLib=function(solution,project,mode) {
+Platform.writeProjectDependencyLib=function(solution,project,mode,full) {
 	var file;
 	var content;
 
@@ -1410,7 +1416,9 @@ Platform.writeProjectDependencyLib=function(solution,project,mode) {
 	file=.buildPath(solution)+"/"+solution.name_+"."+project.name_+".lib.dependency.js";
 	content+=".option(\"library-path\",Platform.installPathX(\""+solution.name_+"\",\""+mode+"\")+\"/lib\");\n";
 	content+=".option(\"include\",Platform.installPathX(\""+solution.name_+"\",\""+mode+"\")+\"/include\");\n";
-	content+=".option(\"library\",\""+project.name_+".static\");\n";
+	if(full){
+		content+=".option(\"library\",\""+project.name_+".static\");\n";
+	};
 	content+=.processDependencyOption(solution,project,mode,false);
 	content+=.processDependency(solution,project);
 	content+=.processDependencyLicence(solution,project);
@@ -1650,7 +1658,7 @@ Platform.installLib=function(solution,project,mode,full) {
 	var installPath;
 	var buildPath;
 	.beginInstall();
-	.writeProjectDependencyLib(solution,project,mode);
+	.writeProjectDependencyLib(solution,project,mode,full);
 	installPath=.installPathX(solution.name_,mode);
 	buildPath=.buildPath(solution);
 
@@ -1674,7 +1682,7 @@ Platform.installDll=function(solution,project,mode,full) {
 	var installPath;
 	var buildPath;
 	.beginInstall();
-	.writeProjectDependencyDll(solution,project,mode);
+	.writeProjectDependencyDll(solution,project,mode,full);
 	installPath=.installPathX(solution.name_,mode);
 	buildPath=.buildPath(solution);
 	.installCopyFile(
