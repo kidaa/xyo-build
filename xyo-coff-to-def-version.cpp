@@ -3,20 +3,20 @@
 namespace XYO{
 	namespace CoffToDef{
 
-		static const char *version_abcd_="1.2.0.18";
+		static const char *version_abcd_="1.2.0.19";
 		static const char *version_a_="1";
 		static const char *version_b_="2";
 		static const char *version_c_="0";
-		static const char *version_d_="18";
+		static const char *version_d_="19";
 		static const char *version_version_="1.2.0";
-		static const char *version_build_="18";
-		static const char *version_hour_="23";
-		static const char *version_minute_="27";
-		static const char *version_second_="37";
-		static const char *version_day_="2";
-		static const char *version_month_="9";
-		static const char *version_year_="2014";
-		static const char *version_datetime_="2014-09-02 23:27:37";
+		static const char *version_build_="19";
+		static const char *version_hour_="10";
+		static const char *version_minute_="20";
+		static const char *version_second_="4";
+		static const char *version_day_="5";
+		static const char *version_month_="1";
+		static const char *version_year_="2015";
+		static const char *version_datetime_="2015-01-05 10:20:04";
 
 		const char *Version::getABCD(){return version_abcd_;};
 		const char *Version::getA(){return version_a_;};

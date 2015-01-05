@@ -212,6 +212,7 @@ int Application::main(int cmdN, char *cmdS[]) {
 
 	if(ExecutiveX::initExecutive(cmdN,cmdS,initExecutive)) {
 		if(ExecutiveX::executeString(script)) {
+			ExecutiveX::executeEnd();
 			return 0;
 		};
 	};
@@ -220,7 +221,7 @@ int Application::main(int cmdN, char *cmdS[]) {
 	printf("%s\n",(ExecutiveX::getError()).value());
 	printf("%s",(ExecutiveX::getStackTrace()).value());
 	fflush(stdout);
-
+	ExecutiveX::executeEnd();
 	return -1;
 };
 

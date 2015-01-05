@@ -1184,7 +1184,7 @@ Platform.processObjToExeRelease=function(solution,project,make,fileObjList) {
 			return true;
 		};
 		ForEach(manifestList,function(key) {
-			if(Shell.cmdX("mt.exe -manifest \""+manifestList[key]+"\" -outputresource:\""+target+"\";2")) {
+			if(Shell.cmdX("mt.exe -manifest \""+manifestList[key]+"\" -outputresource:\""+target+"\";1")) {
 				return true;
 			};
 		});
@@ -1241,7 +1241,7 @@ Platform.processObjToExeDebug=function(solution,project,make,fileObjList) {
 			return true;
 		};
 		ForEach(manifestList,function(key) {
-			if(Shell.cmdX("mt.exe -manifest \""+manifestList[key]+"\" -outputresource:\""+target+"\";2")) {
+			if(Shell.cmdX("mt.exe -manifest \""+manifestList[key]+"\" -outputresource:\""+target+"\";1")) {
 				return true;
 			};
 		});
