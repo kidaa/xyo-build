@@ -51,8 +51,8 @@
 		.install("bin","xyo-build.library/solution.js","xyo-build.library");
 		.install("bin","xyo-build.library/build.js","xyo-build.library");
 
-		.install("bin","xyo-build.library/platform.win32-msvc-express-native.js","xyo-build.library");
-		.install("bin","xyo-build.library/platform.win64-msvc-express-native.js","xyo-build.library");
+		.install("bin","xyo-build.library/platform.win32-msvc.js","xyo-build.library");
+		.install("bin","xyo-build.library/platform.win64-msvc.js","xyo-build.library");
 
 		.option("version","xyo-version", {
 			type:"xyo-cpp",

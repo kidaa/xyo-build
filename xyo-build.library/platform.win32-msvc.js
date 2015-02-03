@@ -7,18 +7,24 @@
 // The MIT License (MIT) <http://opensource.org/licenses/MIT>
 //
 
-Platform.name="ubuntu-x64-native";
-Platform.machineType="X64";
-Platform.osType="UNIX32";
-Platform.osPath="ubuntu-x64-native";
-Platform.osExtra="";
-Platform.osDllEntry="";
+Platform.name="win32-msvc";
+Platform.machineType="X86";
+Platform.osType="WIN32";
+Platform.osPath="win32-msvc";
+Platform.osExtra=" /arch:SSE2";
+Platform.osDllEntry="_DllMainCRTStartup@12";
 
 Platform.defaultLibrary=[
-				"stdc++",
-				"pthread",
-				"ld",
-				"m"
+				"user32",
+				"gdi32",
+				"ws2_32",
+				"ole32",
+				"wininet",
+				"advapi32",
+				"ole32",
+				"oleaut32",
+				"shell32",
+				"iphlpapi"
 			];
 
 Platform.originalEnvPath=Shell.getenv("PATH");
@@ -28,7 +34,7 @@ Platform.buildProject=function(solution,project,mode) {
 	.optionGenerate(solution,project,mode);
 	switch(mode) {
 		case "build":
-			Shell.preparePath(.buildPath(solution).replace("\\","/"));
+			Shell.preparePath(.buildPath(solution).replace("/","\\"));
 			switch(project.type_) {
 				case "lib":
 				case "private-lib":
@@ -101,11 +107,9 @@ Platform.buildProject=function(solution,project,mode) {
 				case "private-process":
 					return true;
 					break;
-				case "dependency-lib-no-lib":
 				case "dependency-lib":
 					return .installLib(solution,project,mode,false);
 					break;
-				case "dependency-dll-no-lib":
 				case "dependency-dll":
 					return .installDll(solution,project,mode,false);
 					break;
@@ -261,7 +265,7 @@ Platform.buildLib=function(solution,project) {
 	make.build(fileLib);
 	if(Build.isLocal_) {
 		if(Shell.fileExists(fileLib)){
-			Shell.copy(fileLib,solution.solutionPath_+"/"+project.name_+".static.lib");
+			Shell.copy(fileLib,solution.solutionPath_+"\\"+project.name_+".static.lib");
 		};
 	};	
 };
@@ -340,8 +344,8 @@ Platform.buildDll=function(solution,project) {
 	make.build(fileDll);
 	if(Build.isLocal_) {
 		if(Shell.fileExists(fileDll)){
-			Shell.copy((.buildPath(solution)+"/"+project.name_+".lib").replace("\\","/"),solution.solutionPath_+"/"+project.name_+".lib");
-			Shell.copy(fileDll,solution.solutionPath_+"/"+project.name_+".dll");
+			Shell.copy((.buildPath(solution)+"/"+project.name_+".lib").replace("/","\\"),solution.solutionPath_+"\\"+project.name_+".lib");
+			Shell.copy(fileDll,solution.solutionPath_+"\\"+project.name_+".dll");
 		};
 	};
 };
@@ -419,7 +423,7 @@ Platform.buildExe=function(solution,project) {
 	make.build(fileExe);
 	if(Build.isLocal_) {
 		if(Shell.fileExists(fileExe)){
-			Shell.copy(fileExe,solution.solutionPath_+"/"+project.name_+".exe");
+			Shell.copy(fileExe,solution.solutionPath_+"\\"+project.name_+".exe");
 		};
 	};
 };
@@ -447,18 +451,18 @@ Platform.processCToObjRelease=function(solution,project,make,fileC) {
 	var optionCategory;
 	var fileObj;
 
-	cmd="gcc -O2 -std=c++11 -std=gnu++11 -fpermissive "+.osExtra;
+	cmd="cl.exe /nologo /O2 /Oi /Oy /GS- /GA /Gy /Gd"+.osExtra;
 
 	crtType=.getOption(solution,project,"crt","type","dynamic");
 	switch(crtType) {
 		case "static":
-			cmd+="";
+			cmd+=" /MT /GL /Gm-";
 			break;
 		case "dynamic":
 			if(.getOption(solution,project,"config","autogenerate-def-file",false)) {
-				cmd+="";
+				cmd+=" /MD /GL-";
 			} else {
-				cmd+="";
+				cmd+=" /MD /GL /Gm-";
 			};
 			break;
 		default:
@@ -466,12 +470,12 @@ Platform.processCToObjRelease=function(solution,project,make,fileC) {
 	};
 
 	if(.getOption(solution,project,"strict","set",false)) {
-		cmd+="";
+		cmd+=" /W4 /WX";
 	};
 
 	optionCategory=.getOptionCategory(solution,project,"include");
 	ForEach(optionCategory,function(key,value) {
-		cmd+=" /I\""+key.replace("\\","/")+"\"";
+		cmd+=" /I\""+key.replace("/","\\")+"\"";
 	});
 
 	optionCategory=.getOptionCategory(solution,project,"define");
@@ -487,9 +491,9 @@ Platform.processCToObjRelease=function(solution,project,make,fileC) {
 		cmd+=" /D"+key+"="+value;
 	});
 
-	fileObj=(.uniqueBuildFileName(solution,project,fileC,"obj")).replace("\\","/");
+	fileObj=(.uniqueBuildFileName(solution,project,fileC,"obj")).replace("/","\\");
 
-	cmd+=" -x c -c -o \""+fileObj+"\" \""+fileC.replace("\\","/")+"\"";
+	cmd+=" /TC /c /Fo\""+fileObj+"\" \""+fileC.replace("/","\\")+"\"";
 
 	make.target(fileObj,fileC,function(target) {
 		Shell.prepareFilePath(target);
@@ -507,27 +511,27 @@ Platform.processCToObjDebug=function(solution,project,make,fileC) {
 	var fileObj;
 	var filePdb;
 
-	cmd="gcc -g -std=c++11 -std=gnu++11 -fpermissive ";
+	cmd="cl.exe /Zi";
 
 	crtType=.getOption(solution,project,"crt","type","dynamic");
 	switch(crtType) {
 		case "static":
-			cmd+="";
+			cmd+=" /MTd";
 			break;
 		case "dynamic":
-			cmd+="";
+			cmd+=" /MDd";
 			break;
 		default:
 			throw(new BuildError("Platform: Unknow how to process crt type '"+crtType+"'"));
 	};
 
 	if(.getOption(solution,project,"strict","set",false)) {
-		cmd+="";
+		cmd+=" /W4 /WX";
 	};
 
 	optionCategory=.getOptionCategory(solution,project,"include");
 	ForEach(optionCategory,function(key,value) {
-		cmd+=" /I\""+key.replace("\\","/")+"\"";
+		cmd+=" /I\""+key.replace("/","\\")+"\"";
 	});
 
 	optionCategory=.getOptionCategory(solution,project,"define");
@@ -543,12 +547,12 @@ Platform.processCToObjDebug=function(solution,project,make,fileC) {
 		cmd+=" /D"+key+"="+value;
 	});
 
-	fileObj=(.uniqueBuildFileName(solution,project,fileC,"obj")).replace("\\","/");
-	//filePdb=(.uniqueBuildFileName(solution,project,fileC,"pdb")).replace("\\","/");
+	fileObj=(.uniqueBuildFileName(solution,project,fileC,"obj")).replace("/","\\");
+	filePdb=(.uniqueBuildFileName(solution,project,fileC,"pdb")).replace("/","\\");
 
-	//cmd+=" /Fd\""+filePdb+"\"";
+	cmd+=" /Fd\""+filePdb+"\"";
 
-	cmd+=" -x c -c -o \""+fileObj+"\" \""+fileC.replace("\\","/")+"\"";
+	cmd+=" /TC /c /Fo\""+fileObj+"\" \""+fileC.replace("/","\\")+"\"";
 
 	make.target(fileObj,fileC,function(target) {
 		Shell.prepareFilePath(target);
@@ -583,18 +587,18 @@ Platform.processCppToObjRelease=function(solution,project,make,fileCpp) {
 	var optionCategory;
 	var fileObj;
 
-	cmd="gcc -O2 -std=c++11 -std=gnu++11 -fpermissive "+.osExtra;
+	cmd="cl.exe /nologo /O2 /Oi /Oy /GS- /GA /Gy /Gd"+.osExtra;
 
 	crtType=.getOption(solution,project,"crt","type","dynamic");
 	switch(crtType) {
 		case "static":
-			cmd+="";
+			cmd+=" /MT /GL /Gm-";
 			break;
 		case "dynamic":
 			if(.getOption(solution,project,"config","autogenerate-def-file",false)) {
-				cmd+="";
+				cmd+=" /MD /GL-";
 			} else {
-				cmd+="";
+				cmd+=" /MD /GL /Gm-";
 			};
 			break;
 		default:
@@ -602,24 +606,24 @@ Platform.processCppToObjRelease=function(solution,project,make,fileCpp) {
 	};
 
 	if(.getOption(solution,project,"strict","set",false)) {
-		cmd+="";
+		cmd+=" /W4 /WX";
 	};
 
 	if(.getOption(solution,project,"cpp","rtti",true)) {
-		cmd+="";
+		cmd+=" /EHsc";
 	} else {
-		cmd+="";
+		cmd+=" /EHsc-";
 	};
 
 	if(.getOption(solution,project,"cpp","exceptions",true)) {
-		cmd+="";
+		cmd+=" /GR";
 	} else {
-		cmd+="";
+		cmd+=" /GR-";
 	};
 
 	optionCategory=.getOptionCategory(solution,project,"include");
 	ForEach(optionCategory,function(key,value) {
-		cmd+=" /I\""+key.replace("\\","/")+"\"";
+		cmd+=" /I\""+key.replace("/","\\")+"\"";
 	});
 
 	optionCategory=.getOptionCategory(solution,project,"define");
@@ -635,9 +639,9 @@ Platform.processCppToObjRelease=function(solution,project,make,fileCpp) {
 		cmd+=" /D"+key+"="+value;
 	});
 
-	fileObj=(.uniqueBuildFileName(solution,project,fileCpp,"obj")).replace("\\","/");
+	fileObj=(.uniqueBuildFileName(solution,project,fileCpp,"obj")).replace("/","\\");
 
-	cmd+=" -x cpp -c -o\""+fileObj+"\" \""+fileCpp.replace("\\","/")+"\"";
+	cmd+=" /TP /c /Fo\""+fileObj+"\" \""+fileCpp.replace("/","\\")+"\"";
 
 	make.target(fileObj,fileCpp,function(target) {
 		Shell.prepareFilePath(target);
@@ -655,34 +659,34 @@ Platform.processCppToObjDebug=function(solution,project,make,fileCpp) {
 	var fileObj;
 	var filePdb;
 
-	cmd="gcc -g -std=c++11 -std=gnu++11 -fpermissive ";
+	cmd="cl.exe /nologo /Zi";
 
 	crtType=.getOption(solution,project,"crt","type","dynamic");
 	switch(crtType) {
 		case "static":
-			cmd+="";
+			cmd+=" /MTd";
 			break;
 		case "dynamic":
-			cmd+="";
+			cmd+=" /MDd";
 			break;
 		default:
 			throw(new BuildError("Platform: Unknow how to process crt type '"+crtType+"'"));
 	};
 
 	if(.getOption(solution,project,"strict","set",false)) {
-		cmd+="";
+		cmd+=" /W4 /WX";
 	};
 
 	if(.getOption(solution,project,"cpp","rtti",true)) {
-		cmd+="";
+		cmd+=" /EHsc";
 	} else {
-		cmd+="";
+		cmd+=" /EHsc-";
 	};
 
 	if(.getOption(solution,project,"cpp","exceptions",true)) {
-		cmd+="";
+		cmd+=" /GR";
 	} else {
-		cmd+="";
+		cmd+=" /GR-";
 	};
 
 	optionCategory=.getOptionCategory(solution,project,"include");
@@ -703,12 +707,12 @@ Platform.processCppToObjDebug=function(solution,project,make,fileCpp) {
 		cmd+=" /D"+key+"="+value;
 	});
 
-	fileObj=(.uniqueBuildFileName(solution,project,fileCpp,"obj")).replace("\\","/");
-	//filePdb=(.uniqueBuildFileName(solution,project,fileCpp,"pdb")).replace("\\","/");
+	fileObj=(.uniqueBuildFileName(solution,project,fileCpp,"obj")).replace("/","\\");
+	filePdb=(.uniqueBuildFileName(solution,project,fileCpp,"pdb")).replace("/","\\");
 
-	//cmd+=" /Fd\""+filePdb+"\"";
+	cmd+=" /Fd\""+filePdb+"\"";
 
-	cmd+=" -x cpp -c -o \""+fileObj+"\" \""+fileCpp.replace("\\","/")+"\"";
+	cmd+=" /TP /c /Fo\""+fileObj+"\" \""+fileCpp.replace("/","\\")+"\"";
 
 	make.target(fileObj,fileCpp,function(target) {
 		Shell.prepareFilePath(target);
@@ -740,7 +744,7 @@ Platform.processObjToLibRelease=function(solution,project,make,fileObjList) {
 	var targetLib;
 	var obj2Lib;
 
-	targetLib=(.buildPath(solution)+"/"+project.name_+".static.lib").replace("\\","/");
+	targetLib=(.buildPath(solution)+"/"+project.name_+".static.lib").replace("/","\\");
 
 	cmd="/NOLOGO /OUT:\""+targetLib+"\" /MACHINE:"+.machineType;
 
@@ -762,7 +766,7 @@ Platform.processObjToLibRelease=function(solution,project,make,fileObjList) {
 		cmd+=" \""+value+"\"";
 	});
 
-	obj2Lib=(.buildPath(solution)+"/"+project.name_+".obj2lib").replace("\\","/");
+	obj2Lib=(.buildPath(solution)+"/"+project.name_+".obj2lib").replace("/","\\");
 
 	make.target(targetLib,fileObjList,function(target) {
 		Shell.prepareFilePath(target);
@@ -780,7 +784,7 @@ Platform.processObjToLibDebug=function(solution,project,make,fileObjList) {
 	var targetLib;
 	var obj2Lib;
 
-	targetLib=(.buildPath(solution)+"/"+project.name_+".static.lib").replace("\\","/");
+	targetLib=(.buildPath(solution)+"/"+project.name_+".static.lib").replace("/","\\");
 
 	cmd="/NOLOGO /OUT:\""+targetLib+"\" /MACHINE:"+.machineType;
 
@@ -802,7 +806,7 @@ Platform.processObjToLibDebug=function(solution,project,make,fileObjList) {
 		cmd+=" \""+value+"\"";
 	});
 
-	obj2Lib=(.buildPath(solution)+"/"+project.name_+".obj2lib").replace("\\","/");
+	obj2Lib=(.buildPath(solution)+"/"+project.name_+".obj2lib").replace("/","\\");
 
 	make.target(targetLib,fileObjList,function(target) {
 		Shell.prepareFilePath(target);
@@ -847,7 +851,7 @@ Platform.processObjToDllRelease=function(solution,project,make,fileObjList) {
 		sourceList[sourceList.length]=value;
 	});
 
-	targetDll=(.buildPath(solution)+"/"+project.name_+".dll").replace("\\","/");
+	targetDll=(.buildPath(solution)+"/"+project.name_+".dll").replace("/","\\");
 
 	cmd="/NOLOGO /OUT:\""+targetDll+"\" /MACHINE:"+.machineType+" /DLL /INCREMENTAL:NO /RELEASE /OPT:REF /OPT:ICF";
 
@@ -873,14 +877,14 @@ Platform.processObjToDllRelease=function(solution,project,make,fileObjList) {
 
 	cmd+=" /ENTRY:"+.getOption(solution,project,"dll","entry",.osDllEntry);
 
-	cmd+=" /LIBPATH:\""+((.buildPath(solution)).replace("\\","/"))+"\"";
+	cmd+=" /LIBPATH:\""+((.buildPath(solution)).replace("/","\\"))+"\"";
 
 	optionCategory=.getOptionCategory(solution,project,"library-path");
 	ForEach(optionCategory,function(key,value) {
-		cmd+=" /LIBPATH:\""+(key.replace("\\","/"))+"\"";
+		cmd+=" /LIBPATH:\""+(key.replace("/","\\"))+"\"";
 	});
 
-	impLib=(.buildPath(solution)+"/"+project.name_+".lib").replace("\\","/");
+	impLib=(.buildPath(solution)+"/"+project.name_+".lib").replace("/","\\");
 
 	cmd+=" /implib:\""+impLib+"\"";
 
@@ -911,7 +915,7 @@ Platform.processObjToDllRelease=function(solution,project,make,fileObjList) {
 		cmd+=" \""+value+".lib\"";
 	});
 
-	obj2Dll=(.buildPath(solution)+"/"+project.name_+".obj2dll").replace("\\","/");
+	obj2Dll=(.buildPath(solution)+"/"+project.name_+".obj2dll").replace("/","\\");
 
 	fileManifest=.getFileCategory(solution,project,"source","manifest");
 
@@ -949,7 +953,7 @@ Platform.processObjToDllDebug=function(solution,project,make,fileObjList) {
 		sourceList[sourceList.length]=value;
 	});
 
-	targetDll=(.buildPath(solution)+"/"+project.name_+".dll").replace("\\","/");
+	targetDll=(.buildPath(solution)+"/"+project.name_+".dll").replace("/","\\");
 
 	cmd="/NOLOGO /OUT:\""+targetDll+"\" /MACHINE:"+.machineType+" /DLL /DEBUG";
 
@@ -975,14 +979,14 @@ Platform.processObjToDllDebug=function(solution,project,make,fileObjList) {
 
 	cmd+=" /ENTRY:"+.getOption(solution,project,"dll","entry",.osDllEntry);
 
-	cmd+=" /LIBPATH:\""+((.buildPath(solution)).replace("\\","/"))+"\"";
+	cmd+=" /LIBPATH:\""+((.buildPath(solution)).replace("/","\\"))+"\"";
 
 	optionCategory=.getOptionCategory(solution,project,"library-path");
 	ForEach(optionCategory,function(key,value) {
-		cmd+=" /LIBPATH:\""+(key.replace("\\","/"))+"\"";
+		cmd+=" /LIBPATH:\""+(key.replace("/","\\"))+"\"";
 	});
 
-	impLib=(.buildPath(solution)+"/"+project.name_+".lib").replace("\\","/");
+	impLib=(.buildPath(solution)+"/"+project.name_+".lib").replace("/","\\");
 
 	cmd+=" /implib:\""+impLib+"\"";
 
@@ -1011,7 +1015,7 @@ Platform.processObjToDllDebug=function(solution,project,make,fileObjList) {
 		cmd+=" \""+value+".lib\"";
 	});
 
-	obj2Dll=(.buildPath(solution)+"/"+project.name_+".obj2dll").replace("\\","/");
+	obj2Dll=(.buildPath(solution)+"/"+project.name_+".obj2dll").replace("/","\\");
 
 	fileManifest=.getFileCategory(solution,project,"source","manifest");
 
@@ -1059,7 +1063,7 @@ Platform.processRcToRes=function(solution,project,make,fileRc) {
 		cmd+=" /d "+key+"="+value;
 	});
 
-	fileRes=(.uniqueBuildFileName(solution,project,fileRc,"res")).replace("\\","/");
+	fileRes=(.uniqueBuildFileName(solution,project,fileRc,"res")).replace("/","\\");
 
 	cmd+=" /l 409 /z \"MS Sans Serif,Helv/MS Shell Dlg\" /r /fo \""+fileRes+"\" \""+fileRc+"\"";
 
@@ -1076,7 +1080,7 @@ Platform.processResToObj=function(solution,project,make,fileRes) {
 	var cmd;
 	var fileObj;
 
-	fileObj=(Shell.getFileBasename(fileRes)+".obj").replace("\\","/");
+	fileObj=(Shell.getFileBasename(fileRes)+".obj").replace("/","\\");
 
 	cmd="cvtres.exe /NOLOGO /MACHINE:"+.machineType+" /OUT:\""+fileObj+"\" \""+fileRes+"\"";
 
@@ -1096,8 +1100,8 @@ Platform.processObjToDef=function(solution,project,make,fileObjList) {
 	var fileCoff2Def;
 	var content;
 
-	fileDef=(.buildPath(solution)+"/"+project.name_+".generated.def").replace("\\","/");
-	fileCoff2Def=(.buildPath(solution)+"/"+project.name_+".coff2def").replace("\\","/");
+	fileDef=(.buildPath(solution)+"/"+project.name_+".generated.def").replace("/","\\");
+	fileCoff2Def=(.buildPath(solution)+"/"+project.name_+".coff2def").replace("/","\\");
 
 	cmd="xyo-coff-to-def.exe --mode "+.osType+" --out \""+fileDef+"\"";
 
@@ -1140,35 +1144,35 @@ Platform.processObjToExeRelease=function(solution,project,make,fileObjList) {
 	var fileManifest;
 	var optionCategory;
 
-	targetExe=(.buildPath(solution)+"/"+project.name_+".exe").replace("\\","/");
+	targetExe=(.buildPath(solution)+"/"+project.name_+".exe").replace("/","\\");
 
-	cmd=" -o \""+targetExe+"\" ";
+	cmd="/NOLOGO /OUT:\""+targetExe+"\" /MACHINE:"+.machineType+" /INCREMENTAL:NO /RELEASE /OPT:REF /OPT:ICF /LTCG";
 
 	if(!.getOption(solution,project,"cpp","exceptions",true)) {
-		cmd+="";
+		cmd+=" /SAFESEH:NO";
 	};
 
-	cmd+=" -L\""+((.buildPath(solution)).replace("\\","/"))+"\"";
+	cmd+=" /LIBPATH:\""+((.buildPath(solution)).replace("/","\\"))+"\"";
 
 	optionCategory=.getOptionCategory(solution,project,"library-path");
 	ForEach(optionCategory,function(key,value) {
-		cmd+=" -L\""+(key.replace("\\","/"))+"\"";
+		cmd+=" /LIBPATH:\""+(key.replace("/","\\"))+"\"";
 	});
 
 	ForEach(fileObjList,function(key,value) {
-		cmd+=" -l\""+value+"\"";
+		cmd+=" \""+value+"\"";
 	});
 
 	optionCategory=.getOptionCategory(solution,project,"library");
 	ForEach(optionCategory,function(key,value) {
-		cmd+=" -l\""+key+"\"";
+		cmd+=" \""+key+".lib\"";
 	});
 
 	ForEach(.defaultLibrary,function(key,value) {
-		cmd+=" \""+value+"\"";
+		cmd+=" \""+value+".lib\"";
 	});
 
-	obj2Exe=(.buildPath(solution)+"/"+project.name_+".obj2exe").replace("\\","/");
+	obj2Exe=(.buildPath(solution)+"/"+project.name_+".obj2exe").replace("/","\\");
 
 	fileManifest=.getFileCategory(solution,project,"source","manifest");
 
@@ -1180,12 +1184,12 @@ Platform.processObjToExeRelease=function(solution,project,make,fileObjList) {
 			return true;
 		};
 		ForEach(manifestList,function(key) {
-			if(Shell.cmdX("mt.exe -manifest \""+manifestList[key]+"\" -outputresource:\""+target+"\";2")) {
+			if(Shell.cmdX("mt.exe -manifest \""+manifestList[key]+"\" -outputresource:\""+target+"\";1")) {
 				return true;
 			};
 		});
 		return false;
-	},[cmd,obj2Exe,"ld <<"+obj2Exe],[targetExe,fileManifest]);
+	},[cmd,obj2Exe,"link.exe @"+obj2Exe],[targetExe,fileManifest]);
 
 	return targetExe;
 };
@@ -1197,19 +1201,19 @@ Platform.processObjToExeDebug=function(solution,project,make,fileObjList) {
 	var fileManifest;
 	var optionCategory;
 
-	targetExe=(.buildPath(solution)+"/"+project.name_+".exe").replace("\\","/");
+	targetExe=(.buildPath(solution)+"/"+project.name_+".exe").replace("/","\\");
 
-	cmd=" -o \""+targetExe+"\" ";
+	cmd="/NOLOGO /OUT:\""+targetExe+"\" /MACHINE:"+.machineType+" /INCREMENTAL:NO /DEBUG /OPT:REF /OPT:ICF";
 
 	if(!.getOption(solution,project,"cpp","exceptions",true)) {
-		cmd+="";
+		cmd+=" /SAFESEH:NO";
 	};
 
-	cmd+=" -L\""+((.buildPath(solution)).replace("\\","/"))+"\"";
+	cmd+=" /LIBPATH:\""+((.buildPath(solution)).replace("/","\\"))+"\"";
 
 	optionCategory=.getOptionCategory(solution,project,"library-path");
 	ForEach(optionCategory,function(key,value) {
-		cmd+=" -L\""+(key.replace("\\","/"))+"\"";
+		cmd+=" /LIBPATH:\""+(key.replace("/","\\"))+"\"";
 	});
 
 	ForEach(fileObjList,function(key,value) {
@@ -1218,14 +1222,14 @@ Platform.processObjToExeDebug=function(solution,project,make,fileObjList) {
 
 	optionCategory=.getOptionCategory(solution,project,"library");
 	ForEach(optionCategory,function(key,value) {
-		cmd+=" -l\""+key+"\"";
+		cmd+=" \""+key+".lib\"";
 	});
 
 	ForEach(.defaultLibrary,function(key,value) {
-		cmd+=" -l\""+value+"\"";
+		cmd+=" \""+value+".lib\"";
 	});
 
-	obj2Exe=(.buildPath(solution)+"/"+project.name_+".obj2exe").replace("\\","/");
+	obj2Exe=(.buildPath(solution)+"/"+project.name_+".obj2exe").replace("/","\\");
 
 	fileManifest=.getFileCategory(solution,project,"source","manifest");
 
@@ -1237,29 +1241,29 @@ Platform.processObjToExeDebug=function(solution,project,make,fileObjList) {
 			return true;
 		};
 		ForEach(manifestList,function(key) {
-			if(Shell.cmdX("mt.exe -manifest \""+manifestList[key]+"\" -outputresource:\""+target+"\";2")) {
+			if(Shell.cmdX("mt.exe -manifest \""+manifestList[key]+"\" -outputresource:\""+target+"\";1")) {
 				return true;
 			};
 		});
 		return false;
-	},[cmd,obj2Exe,"ld <<"+obj2Exe],[targetExe,fileManifest]);
+	},[cmd,obj2Exe,"link.exe @"+obj2Exe],[targetExe,fileManifest]);
 
 	return targetExe;
 };
 
 
 Platform.is=function(os) {
-	if(os=="unix") {
+	if(os=="win") {
 		return true;
 	};
-	if(os=="unix64") {
+	if(os=="win32") {
 		return true;
 	};
 	return false;
 };
 
 Platform.isCompiler=function(compiler) {
-	if(compiler=="gcc") {
+	if(compiler=="msvc") {
 		return true;
 	};
 	return false;
@@ -1489,7 +1493,7 @@ Platform.processDependencyLocalLicence=function(solution,project) {
 
 	licenceFile=.getOptionCategory(solution,project,"licence-file");
 	ForEach(licenceFile,function(key,value) {
-		licenceContent+=Shell.fileGetContents(key.replace("\\","/"));
+		licenceContent+=Shell.fileGetContents(key.replace("/","\\"));
 		licenceContent+="\n\n";
 		found=true;
 	});
@@ -1537,7 +1541,7 @@ Platform.processDependencyLicence=function(solution,project) {
 	found=false;
 	licenceFile=.getOptionCategory(solution,project,"licence-file");
 	ForEach(licenceFile,function(key,value) {
-		licenceContent+=Shell.fileGetContents(key.replace("\\","/"));
+		licenceContent+=Shell.fileGetContents(key.replace("/","\\"));
 		licenceContent+="\n\n";
 		found=true;
 	});
@@ -1741,12 +1745,12 @@ Platform.endInstall=function(solution,project) {
 	typeX=.projectTypeX(project.type_);
 
 
-	file=(.pathUninstall()+"/"+solution.name_+"."+project.name_+"."+typeX+".uninstall.js").replace("\\","/");
+	file=(.pathUninstall()+"\\"+solution.name_+"."+project.name_+"."+typeX+".uninstall.js").replace("/","\\");
 	.installFileList[.installFileList.length]=file;
 
 	content="// Automatically generated by XYO Build\n\n";
 	ForEach(.installFileList,function(key,value) {
-		content+="Shell.removeFileAndDirectoryIfEmpty(\""+value.replace("/","\\\\")+"\");\n";
+		content+="Shell.removeFileAndDirectoryIfEmpty(\""+value.replace("\\","\\\\")+"\");\n";
 	});
 	content+="\n";
 
@@ -1755,26 +1759,26 @@ Platform.endInstall=function(solution,project) {
 };
 
 Platform.installCopyFile=function(source,target) {
-	.installFileList[.installFileList.length]=target.replace("\\","/");
-	Shell.prepareFilePath(target.replace("\\","/"));
-	Shell.copy(source.replace("\\","/"),target.replace("\\","/"));
+	.installFileList[.installFileList.length]=target.replace("/","\\");
+	Shell.prepareFilePath(target.replace("/","\\"));
+	Shell.copy(source.replace("/","\\"),target.replace("/","\\"));
 };
 
 Platform.installCopyFileToDirectory=function(source,target) {
 	var list;
 
-	Shell.preparePath(target.replace("\\","/"));
-	list=Shell.getFileList(source.replace("\\","/"));
+	Shell.preparePath(target.replace("/","\\"));
+	list=Shell.getFileList(source.replace("/","\\"));
 	ForEach(list,function(key,value) {
-		Shell.copy(value,target.replace("\\","/")+"/"+Shell.getFileName(value));
-		.installFileList[.installFileList.length]=target.replace("\\","/")+"/"+Shell.getFileName(value);
+		Shell.copy(value,target.replace("/","\\")+"\\"+Shell.getFileName(value));
+		.installFileList[.installFileList.length]=target.replace("/","\\")+"\\"+Shell.getFileName(value);
 	},this);
 };
 
 Platform.installCopyDirectory=function(source,target) {
-	Shell.prepareFilePath(target.replace("\\","/"));
-	.installCopyDirRecursively(source.replace("\\","/"),target.replace("\\","/"));
-	.installFileList[.installFileList.length]=target.replace("\\","/")+"\\.dummy";
+	Shell.prepareFilePath(target.replace("/","\\"));
+	.installCopyDirRecursively(source.replace("/","\\"),target.replace("/","\\"));
+	.installFileList[.installFileList.length]=target.replace("/","\\")+"\\.dummy";
 };
 
 Platform.installCopyDirRecursively=function(source,target) {
@@ -1816,10 +1820,10 @@ Platform.installCopyDirRecursively_1=function(source,target,base_) {
 	Shell.mkdirRecursively(target+source.substring(base_.length));
 
 	for(m=0; m<fileList.length; ++m) {
-		.installFileList[.installFileList.length]=(target+fileList[m].substring(base_.length)).replace("\\","/");
+		.installFileList[.installFileList.length]=(target+fileList[m].substring(base_.length)).replace("/","\\");
 		Shell.copy(fileList[m],target+fileList[m].substring(base_.length));
 	};
-	.installFileList[.installFileList.length]=(target+source.substring(base_.length)).replace("\\","/")+"\\.dummy";
+	.installFileList[.installFileList.length]=(target+source.substring(base_.length)).replace("/","\\")+"\\.dummy";
 };
 
 
@@ -1837,10 +1841,10 @@ Platform.installProject_=function(solution,project,mode) {
 			ForEach(value,function(keyX,valueX) {
 				.installCopyFileToDirectory(key,installPath+"\\include\\"+valueX);
 			},this);
-			.installFileList[.installFileList.length]=(installPath+"\\include\\.dummy").replace("\\","/");
+			.installFileList[.installFileList.length]=(installPath+"\\include\\.dummy").replace("/","\\");
 		} else {
 			.installCopyFileToDirectory(key,installPath+"\\include\\"+value);
-			.installFileList[.installFileList.length]=(installPath+"\\include\\.dummy").replace("\\","/");
+			.installFileList[.installFileList.length]=(installPath+"\\include\\.dummy").replace("/","\\");
 		};
 	},this);
 	fileX=.getInstallCategory(solution,project,"lib");
@@ -1851,10 +1855,10 @@ Platform.installProject_=function(solution,project,mode) {
 			ForEach(value,function(keyX,valueX) {
 				.installCopyFileToDirectory(key,installPath+"\\lib\\"+valueX);
 			},this);
-			.installFileList[.installFileList.length]=(installPath+"\\lib\\.dummy").replace("\\","/");
+			.installFileList[.installFileList.length]=(installPath+"\\lib\\.dummy").replace("/","\\");
 		} else {
 			.installCopyFileToDirectory(key,installPath+"\\lib\\"+value);
-			.installFileList[.installFileList.length]=(installPath+"\\lib\\.dummy").replace("\\","/");
+			.installFileList[.installFileList.length]=(installPath+"\\lib\\.dummy").replace("/","\\");
 		};
 	},this);
 	fileX=.getInstallCategory(solution,project,"bin");
@@ -1865,10 +1869,10 @@ Platform.installProject_=function(solution,project,mode) {
 			ForEach(value,function(keyX,valueX) {
 				.installCopyFileToDirectory(key,installPath+"\\bin\\"+valueX);
 			},this);
-			.installFileList[.installFileList.length]=(installPath+"\\bin\\.dummy").replace("\\","/");
+			.installFileList[.installFileList.length]=(installPath+"\\bin\\.dummy").replace("/","\\");
 		} else {
 			.installCopyFileToDirectory(key,installPath+"\\bin\\"+value);
-			.installFileList[.installFileList.length]=(installPath+"\\bin\\.dummy").replace("\\","/");
+			.installFileList[.installFileList.length]=(installPath+"\\bin\\.dummy").replace("/","\\");
 		};
 	},this);
 	fileX=.getInstallCategory(solution,project,"licence");
@@ -1879,10 +1883,10 @@ Platform.installProject_=function(solution,project,mode) {
 			ForEach(value,function(keyX,valueX) {
 				.installCopyFileToDirectory(key,installPath+"\\licence\\"+valueX);
 			},this);
-			.installFileList[.installFileList.length]=(installPath+"\\licence\\.dummy").replace("\\","/");
+			.installFileList[.installFileList.length]=(installPath+"\\licence\\.dummy").replace("/","\\");
 		} else {
 			.installCopyFileToDirectory(key,installPath+"\\licence\\"+value);
-			.installFileList[.installFileList.length]=(installPath+"\\licence\\.dummy").replace("\\","/");
+			.installFileList[.installFileList.length]=(installPath+"\\licence\\.dummy").replace("/","\\");
 		};
 	},this);
 	fileX=.getInstallCategory(solution,project,"install");
@@ -1891,12 +1895,12 @@ Platform.installProject_=function(solution,project,mode) {
 			.installCopyFileToDirectory(key,installPath);
 		} else if(Script.isArray(value)) {
 			ForEach(value,function(keyX,valueX) {
-				.installCopyFileToDirectory(key,installPath+"/"+valueX);
+				.installCopyFileToDirectory(key,installPath+"\\"+valueX);
 			},this);
-			.installFileList[.installFileList.length]=(installPath+"\\.dummy").replace("\\","/");
+			.installFileList[.installFileList.length]=(installPath+"\\.dummy").replace("/","\\");
 		} else {
-			.installCopyFileToDirectory(key,installPath+"/"+value);
-			.installFileList[.installFileList.length]=(installPath+"\\.dummy").replace("\\","/");
+			.installCopyFileToDirectory(key,installPath+"\\"+value);
+			.installFileList[.installFileList.length]=(installPath+"\\.dummy").replace("/","\\");
 		};
 	},this);
 	fileX=.getInstallCategoryX(solution,project,"file");
@@ -1914,11 +1918,11 @@ Platform.installProject_=function(solution,project,mode) {
 		if(Script.isArray(value)) {
 			ForEach(value,function(keyX,valueX) {
 				.installCopyDirectory(key,installPath+"/"+valueX);
-				.installFileList[.installFileList.length]=(installPath+"/"+valueX+"\\.dummy").replace("\\","/");
+				.installFileList[.installFileList.length]=(installPath+"\\"+valueX+"\\.dummy").replace("/","\\");
 			},this);
 		} else {
 			.installCopyDirectory(key,installPath+"/"+value);
-			.installFileList[.installFileList.length]=(installPath+"/"+value+"\\.dummy").replace("\\","/");
+			.installFileList[.installFileList.length]=(installPath+"\\"+value+"\\.dummy").replace("/","\\");
 		};
 	},this);
 	fileX=.getInstallCategory(solution,project,"build");
@@ -1927,12 +1931,12 @@ Platform.installProject_=function(solution,project,mode) {
 			.installCopyFileToDirectory(.buildPath(solution)+"/"+key,installPath);
 		} else if(Script.isArray(value)) {
 			ForEach(value,function(keyX,valueX) {
-				.installCopyFileToDirectory(.buildPath(solution)+"/"+key,installPath+"/"+valueX);
+				.installCopyFileToDirectory(.buildPath(solution)+"/"+key,installPath+"\\"+valueX);
 			},this);
-			.installFileList[.installFileList.length]=(installPath+"\\.dummy").replace("\\","/");
+			.installFileList[.installFileList.length]=(installPath+"\\.dummy").replace("/","\\");
 		} else {
-			.installCopyFileToDirectory(.buildPath(solution)+"/"+key,installPath+"/"+value);
-			.installFileList[.installFileList.length]=(installPath+"\\.dummy").replace("\\","/");
+			.installCopyFileToDirectory(.buildPath(solution)+"/"+key,installPath+"\\"+value);
+			.installFileList[.installFileList.length]=(installPath+"\\.dummy").replace("/","\\");
 		};
 	},this);
 	fileX=.getInstallCategoryX(solution,project,"build-file");
@@ -1950,11 +1954,11 @@ Platform.installProject_=function(solution,project,mode) {
 		if(Script.isArray(value)) {
 			ForEach(value,function(keyX,valueX) {
 				.installCopyDirectory(.buildPath(solution)+"/"+key,installPath+"/"+valueX);
-				.installFileList[.installFileList.length]=(installPath+"/"+valueX+"\\.dummy").replace("\\","/");
+				.installFileList[.installFileList.length]=(installPath+"\\"+valueX+"\\.dummy").replace("/","\\");
 			},this);
 		} else {
 			.installCopyDirectory(.buildPath(solution)+"/"+key,installPath+"/"+value);
-			.installFileList[.installFileList.length]=(installPath+"/"+value+"\\.dummy").replace("\\","/");
+			.installFileList[.installFileList.length]=(installPath+"\\"+value+"\\.dummy").replace("/","\\");
 		};
 	},this);
 	fileX=.buildPath(solution)+"/"+solution.name_+"."+project.name_+"."+project.type_+".licence.txt";
@@ -1965,7 +1969,7 @@ Platform.installProject_=function(solution,project,mode) {
 		);
 	};
 
-	.installFileList[.installFileList.length]=(installPath+"\\.dummy").replace("\\","/");
+	.installFileList[.installFileList.length]=(installPath+"\\.dummy").replace("/","\\");
 };
 
 Platform.buildClean=function(solution,project) {
@@ -1973,16 +1977,16 @@ Platform.buildClean=function(solution,project) {
 	if(Build.isLocal_){
 		var type_=.projectTypeX(project.type_);
 		if(type_=="lib"){
-			Shell.remove(solution.solutionPath_+"/"+project.name_+".static.lib");			
+			Shell.remove(solution.solutionPath_+"\\"+project.name_+".static.lib");			
 			return;
 		};	
 		if(type_=="dll"){
-			Shell.remove(solution.solutionPath_+"/"+project.name_+".lib");
-			Shell.remove(solution.solutionPath_+"/"+project.name_+".dll");
+			Shell.remove(solution.solutionPath_+"\\"+project.name_+".lib");
+			Shell.remove(solution.solutionPath_+"\\"+project.name_+".dll");
 			return;
 		};	
 		if(type_=="exe"){
-			Shell.remove(solution.solutionPath_+"/"+project.name_+".exe");
+			Shell.remove(solution.solutionPath_+"\\"+project.name_+".exe");
 			return;
 		};	
 	};
@@ -1990,7 +1994,7 @@ Platform.buildClean=function(solution,project) {
 
 Platform.uninstallProject=function(solution,project) {
 	var file;
-	file=.pathUninstall()+"/"+solution.name_+"."+project.name_+"."+project.type_+".uninstall.js";
+	file=.pathUninstall()+"\\"+solution.name_+"."+project.name_+"."+project.type_+".uninstall.js";
 	if(Shell.fileExists(file)) {
 		try {
 			Script.include.call(this,file);
@@ -2034,7 +2038,7 @@ Platform.digitalSignExe=function(solution,project) {
 	ForEach(.getOptionCategory(solution,project,"sign"),function(key,value) {
 		cmd="sign-"+key;
 		file=.buildPath(solution)+"/"+project.name_+".exe";
-		cmd+=" \""+project.name_+"\" \""+file.replace("\\","/")+"\"";
+		cmd+=" \""+project.name_+"\" \""+file.replace("/","\\")+"\"";
 		.sysCmd(cmd);
 	},this);
 };
@@ -2046,7 +2050,7 @@ Platform.digitalSignDll=function(solution,project) {
 	ForEach(.getOptionCategory(solution,project,"sign"),function(key,value) {
 		cmd="sign-"+key;
 		file=.buildPath(solution)+"/"+project.name_+".dll";
-		cmd+=" \""+project.name_+"\" \""+file.replace("\\","/")+"\"";
+		cmd+=" \""+project.name_+"\" \""+file.replace("/","\\")+"\"";
 		.sysCmd(cmd);
 	},this);
 };
@@ -2088,7 +2092,7 @@ Platform.optionGenerateBuild=function(solution,project) {
 
 			licenceFile=.getOptionCategory(solution,project,"licence-dependency");
 			ForEach(licenceFile,function(key,value) {
-				file=(.pathDependency()+"/"+key+".licence.txt").replace("\\","/");
+				file=(.pathDependency()+"/"+key+".licence.txt").replace("/","\\");
 				if(Shell.fileExists(file)) {
 					licenceContent+=Shell.fileGetContents(file);
 					licenceContent+="\n\n";

@@ -7,12 +7,12 @@
 // The MIT License (MIT) <http://opensource.org/licenses/MIT>
 //
 
-Script.include("xyo-build/platform.win32-msvc-express-native.js");
+Script.include("xyo-build/platform.win64-msvc.js");
 
-Platform.name="win64-msvc-express-native";
+Platform.name="win64-msvc";
 Platform.machineType="X64";
 Platform.osType="WIN64";
-Platform.osPath="win64-msvc-express-native";
+Platform.osPath="win64-msvc";
 Platform.osExtra="";
 Platform.osDllEntry="_DllMainCRTStartup";
 

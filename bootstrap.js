@@ -21,8 +21,8 @@
 			.install("bin","xyo-build.library/build.js","xyo-build.library");
 			.install("bin","xyo-build.config.js");
 
-			.install("bin","xyo-build.library/platform.win32-msvc-express-native.js","xyo-build.library");
-			.install("bin","xyo-build.library/platform.win64-msvc-express-native.js","xyo-build.library");
+			.install("bin","xyo-build.library/platform.win32-msvc.js","xyo-build.library");
+			.install("bin","xyo-build.library/platform.win64-msvc.js","xyo-build.library");
 
 			.install("bin","xyo-build.exe");
 			.install("bin","xyo-version.exe");
@@ -47,7 +47,7 @@
 			.install("bin","xyo-build.library/build.js","xyo-build.library");
 			.install("bin","xyo-build.config.js");
 
-			.install("bin","xyo-build.library/platform.ubuntu-x64-native.js","xyo-build.library");
+			.install("bin","xyo-build.library/platform.ubuntu-x64.js","xyo-build.library");
 
 			.install("bin","xyo-build");
 			.install("bin","xyo-version");
@@ -55,7 +55,6 @@
 		});
 
 	};
-
 
 });
 
