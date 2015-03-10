@@ -44,15 +44,15 @@
 		.file("source","xyo-build-version.hpp");
 		.file("source","xyo-build.rc");
 
-		.install("bin","xyo-build.library/shell.js","xyo-build.library");
-		.install("bin","xyo-build.library/make.js","xyo-build.library");
-		.install("bin","xyo-build.library/platform.js","xyo-build.library");
-		.install("bin","xyo-build.library/project.js","xyo-build.library");
-		.install("bin","xyo-build.library/solution.js","xyo-build.library");
-		.install("bin","xyo-build.library/build.js","xyo-build.library");
+		.install("bin","xyo-build.include/shell.js","xyo-build.include");
+		.install("bin","xyo-build.include/make.js","xyo-build.include");
+		.install("bin","xyo-build.include/platform.js","xyo-build.include");
+		.install("bin","xyo-build.include/project.js","xyo-build.include");
+		.install("bin","xyo-build.include/solution.js","xyo-build.include");
+		.install("bin","xyo-build.include/build.js","xyo-build.include");
 
-		.install("bin","xyo-build.library/platform.win32-msvc.js","xyo-build.library");
-		.install("bin","xyo-build.library/platform.win64-msvc.js","xyo-build.library");
+		.install("bin","xyo-build.include/platform.win32-msvc.js","xyo-build.include");
+		.install("bin","xyo-build.include/platform.win64-msvc.js","xyo-build.include");
 
 		.option("version","xyo-version", {
 			type:"xyo-cpp",

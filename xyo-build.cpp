@@ -35,21 +35,20 @@ using namespace XYO;
 using namespace XYO::XY;
 using namespace XYO::XO;
 using namespace Quantum::Script;
-using namespace Quantum::Script::Vm;
 
 bool isError;
 
-QUANTUM_SCRIPT_VM_INSTRUCTION_DEFINE(Build_isError);
+QUANTUM_SCRIPT_INSTRUCTION_DEFINE(Build_isError);
 
-QUANTUM_SCRIPT_VM_INSTRUCTION_IMPLEMENT(Build_isError) {
-#ifdef QUANTUM_SCRIPT_VM_DEBUG_RUNTIME
+QUANTUM_SCRIPT_INSTRUCTION_IMPLEMENT(Build_isError) {
+#ifdef QUANTUM_SCRIPT_DEBUG_RUNTIME
 	printf("#%p    build-is-error\n", context->currentProgramCounter);
 #endif
 
 	TPointer<Variable> operand1;
 	operand1 = context->getArgument(0);
 	if (operand1) {
-		isError=operand1->toBoolean();
+		isError=Process::toBoolean(operand1);
 	};
 	return;
 };
@@ -89,7 +88,7 @@ bool Application::initExecutive(Executive *executive) {
 	    ) != 0) {
 		return false;
 	};
-	if (executive->compileString("Script.include(\"xyo-build.library/shell.js\");") != 0) {
+	if (executive->compileString("Script.include(\"xyo-build.include/shell.js\");") != 0) {
 		return false;
 	};
 	if (executive->compileString("var Build={};") != 0) {
@@ -180,14 +179,14 @@ int Application::main(int cmdN, char *cmdS[]) {
 	       "};\n"
 	       "BuildError.prototype=new Error();\n"
 	       "function ___main(){\n"
-	       "\tScript.include(\"xyo-build.library/build.js\");\n"
+	       "\tScript.include(\"xyo-build.include/build.js\");\n"
 	       "\tif(Shell.fileExists(\""<<scriptConfig<<"\")){\n"
 	       "\t\tScript.include(\""<<scriptConfig<<"\");\n"
 	       "\t};\n"
-	       "\tScript.include(\"xyo-build.library/make.js\");\n"
-	       "\tScript.include(\"xyo-build.library/project.js\");\n"
-	       "\tScript.include(\"xyo-build.library/solution.js\");\n"
-	       "\tScript.include(\"xyo-build.library/platform.js\");\n"
+	       "\tScript.include(\"xyo-build.include/make.js\");\n"
+	       "\tScript.include(\"xyo-build.include/project.js\");\n"
+	       "\tScript.include(\"xyo-build.include/solution.js\");\n"
+	       "\tScript.include(\"xyo-build.include/platform.js\");\n"
 	       "\tBuild.parseCommandLine();\n"
 	       "\tif(Build.cmdMode()){\n"
 	       "\t}else{\n"
@@ -226,4 +225,9 @@ int Application::main(int cmdN, char *cmdS[]) {
 };
 
 XYO_XY_MAIN_STD(Application);
+
+
+#ifdef QUANTUM_SCRIPT_AMALGAM
+#include "quantum-script-amalgam.cpp"
+#endif
 

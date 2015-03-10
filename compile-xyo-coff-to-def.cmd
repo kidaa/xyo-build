@@ -6,14 +6,14 @@ set SRC=%SRC% xyo-coff-to-def-copyright.cpp
 set SRC=%SRC% xyo-coff-to-def-licence.cpp
 set SRC=%SRC% xyo-coff-to-def-version.cpp
 
-set XLIB= ..\libxyo-xy\
+set XLIB= ..\quantum-script\libxyo-xy\
 set SRC=%SRC% %XLIB%xyo-xy-object.cpp
 set SRC=%SRC% %XLIB%xyo-xy-xcriticalsection--os-win.cpp
 set SRC=%SRC% %XLIB%xyo-xy-xregistryprocess.cpp
 set SRC=%SRC% %XLIB%xyo-xy-xregistrythread.cpp
 set SRC=%SRC% %XLIB%xyo-xy-xthread--os-win.cpp
 
-set XLIB= ..\libxyo-xo\
+set XLIB= ..\quantum-script\libxyo-xo\
 set SRC=%SRC% %XLIB%xyo-xo-error.cpp
 set SRC=%SRC% %XLIB%xyo-xo-stringbasebyte.cpp
 set SRC=%SRC% %XLIB%xyo-xo-stringreferencebyte.cpp
@@ -25,8 +25,8 @@ set SRC=%SRC% %XLIB%xyo-xo-shell--os-win.cpp
 set SRC=%SRC% %XLIB%xyo-xo-console--os-win.cpp
 
 set INC=
-set INC= %INC% /I..\libxyo-xy
-set INC= %INC% /I..\libxyo-xo
+set INC= %INC% /I..\quantum-script\libxyo-xy
+set INC= %INC% /I..\quantum-script\libxyo-xo
 
 set DEF=
 set DEF= %DEF% /DXYO_OS_TYPE_WIN

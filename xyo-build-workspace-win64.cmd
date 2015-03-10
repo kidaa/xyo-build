@@ -7,11 +7,11 @@
 @set INCLUDE=C:\Program Files (x86)\Windows Kits\8.1\Include\um;%INCLUDE%
 @set LIB=C:\Program Files (x86)\Windows Kits\8.1\Lib\winv6.3\um\x64;%LIB%
 @rem ------------------------------------------
-@set XYO_BUILD_PLATFORM=win64-msvc-express-native
+@set XYO_BUILD_PLATFORM=win64-msvc
 @set XYO_OS=WIN64
 @set XYO_PATH_BASE=C:\MySoftware\
 @set XYO_PATH_REPOSITORY=%XYO_PATH_BASE%Repository\
-@set XYO_PATH_BIN=%XYO_PATH_REPOSITORY%win64-msvc-express-native\
+@set XYO_PATH_BIN=%XYO_PATH_REPOSITORY%win64-msvc\
 @rem ------ digital signature
 @set PATH=%XYO_PATH_BASE%Certificate\bin;%PATH%
 @rem ------ visual leak detector
