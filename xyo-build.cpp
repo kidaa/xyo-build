@@ -48,7 +48,7 @@ QUANTUM_SCRIPT_INSTRUCTION_IMPLEMENT(Build_isError) {
 	TPointer<Variable> operand1;
 	operand1 = context->getArgument(0);
 	if (operand1) {
-		isError=Process::toBoolean(operand1);
+		isError=operand1->toBoolean();
 	};
 	return;
 };
