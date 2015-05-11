@@ -6,10 +6,6 @@ set SRC=%SRC% xyo-build.cpp
 set SRC=%SRC% xyo-build-copyright.cpp
 set SRC=%SRC% xyo-build-licence.cpp
 
-set XLIB= ..\quantum-script\libxyo-xy\
-set SRC=%SRC% %XLIB%xyo-xy-xregistryprocess.cpp
-set SRC=%SRC% %XLIB%xyo-xy-xregistrythread.cpp
-
 set INC=
 set INC= %INC% /I..\quantum-script
 set INC= %INC% /I..\quantum-script\libquantum-script

@@ -12,6 +12,8 @@ set SRC=%SRC% %XLIB%xyo-xy-xcriticalsection--os-win.cpp
 set SRC=%SRC% %XLIB%xyo-xy-xregistryprocess.cpp
 set SRC=%SRC% %XLIB%xyo-xy-xregistrythread.cpp
 set SRC=%SRC% %XLIB%xyo-xy-xthread--os-win.cpp
+set SRC=%SRC% %XLIB%xyo-xy-xregistry.cpp
+set SRC=%SRC% %XLIB%xyo-xy-xregistrykey.cpp
 
 set XLIB= ..\quantum-script\libxyo-xo\
 set SRC=%SRC% %XLIB%xyo-xo-error.cpp

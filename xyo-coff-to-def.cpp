@@ -110,64 +110,64 @@ int Application::generateDefFile(TRedBlackTreeOne<String > &inList, PTSTR pszFil
 		fprintf(out, "%s", "LIBRARY\r\nEXPORTS\r\n");
 		TXRedBlackTreeNodeOne<String > *i;
 		for (i = inList.begin(); i; i = i->succesor()) {
-			if (StringBase::beginWith(i->value, "__real@")) {
+			if (StringBase::beginWith(i->key, "__real@")) {
 				continue;
 			};
-			if (StringBase::beginWith(i->value, "??_")) {
+			if (StringBase::beginWith(i->key, "??_")) {
 				continue;
 			};
-			if (StringBase::beginWith(i->value, "__CT??")) {
+			if (StringBase::beginWith(i->key, "__CT??")) {
 				continue;
 			};
-			if (i->value == "__CTA1_N") {
+			if (i->key == "__CTA1_N") {
 				continue;
 			};
-			if (StringBase::beginWith(i->value, "__CTA2?")) {
+			if (StringBase::beginWith(i->key, "__CTA2?")) {
 				continue;
 			};
-			if (i->value == "__TI1_N") {
+			if (i->key == "__TI1_N") {
 				continue;
 			};
-			if (StringBase::beginWith(i->value, "__TI2?")) {
+			if (StringBase::beginWith(i->key, "__TI2?")) {
 				continue;
 			};
-			if (StringBase::beginWith(i->value, "__CTA1?AV")) {
+			if (StringBase::beginWith(i->key, "__CTA1?AV")) {
 				continue;
 			};
-			if (StringBase::beginWith(i->value, "__CTA2PAV")) {
+			if (StringBase::beginWith(i->key, "__CTA2PAV")) {
 				continue;
 			};
-			if (StringBase::beginWith(i->value, "__TI1?AV")) {
+			if (StringBase::beginWith(i->key, "__TI1?AV")) {
 				continue;
 			};
-			if (StringBase::beginWith(i->value, "__TI2PAV")) {
+			if (StringBase::beginWith(i->key, "__TI2PAV")) {
 				continue;
 			};
-			if (StringBase::beginWith(i->value, "__mask@@")) {
+			if (StringBase::beginWith(i->key, "__mask@@")) {
 				continue;
 			};
-			if (StringBase::beginWith(i->value, "__xmm@")) {
+			if (StringBase::beginWith(i->key, "__xmm@")) {
 				continue;
 			};
 
 
 
 			if (mode == 0) {
-				if (StringBase::beginWith(i->value, "_")) {
+				if (StringBase::beginWith(i->key, "_")) {
 					size_t index;
-					if(StringBase::indexOf(i->value, "@",index)) {
-						fwrite(i->value.value(), 1, i->value.length(), out);
+					if(StringBase::indexOf(i->key, "@",index)) {
+						fwrite(i->key.value(), 1, i->key.length(), out);
 					} else {
-						fwrite(i->value.index(1), 1, i->value.length() - 1, out);
+						fwrite(i->key.index(1), 1, i->key.length() - 1, out);
 					};
 					fwrite("\r\n", 1, 2, out);
 				};
-				if (StringBase::beginWith(i->value, "?")) {
-					fwrite(i->value.value(), 1, i->value.length(), out);
+				if (StringBase::beginWith(i->key, "?")) {
+					fwrite(i->key.value(), 1, i->key.length(), out);
 					fwrite("\r\n", 1, 2, out);
 				};
 			} else if (mode == 1) {
-				fwrite(i->value.value(), 1, i->value.length(), out);
+				fwrite(i->key.value(), 1, i->key.length(), out);
 				fwrite("\r\n", 1, 2, out);
 			};
 		};
@@ -249,9 +249,9 @@ int Application::main(int cmdN, char *cmdS[]) {
 
 
 	for (coff = coffList.begin(); coff; coff = coff->succesor()) {
-		if(coff->value[0]=='@') {
+		if(coff->key[0]=='@') {
 			FILE *in;
-			in=fopen((char *)&(coff->value.value())[1],"rb");
+			in=fopen((char *)&(coff->key.value())[1],"rb");
 			if(in!=NULL) {
 				int k;
 				char buffer[1024];
@@ -274,7 +274,7 @@ int Application::main(int cmdN, char *cmdS[]) {
 				fclose(in);
 			};
 		} else {
-			getCoffSymbolsFromFile((PTSTR) coff->value.value(), defList, showCoffSymbols);
+			getCoffSymbolsFromFile((PTSTR) coff->key.value(), defList, showCoffSymbols);
 		};
 	};
 
