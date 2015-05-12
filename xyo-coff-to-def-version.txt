@@ -1,4 +1,4 @@
-build=19
-date=2015-01-05
-time=10:20:04
-version=1.2.0
+build=20
+date=2015-05-13
+time=00:06:39
+version=2.0.0

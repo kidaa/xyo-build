@@ -1,29 +1,29 @@
 #ifndef XYO_COFF_TO_DEF_VERSION_HPP
 #define XYO_COFF_TO_DEF_VERSION_HPP
 
-#define XYO_COFF_TO_DEF_VERSION_ABCD      1,2,0,19
-#define XYO_COFF_TO_DEF_VERSION_A         1
-#define XYO_COFF_TO_DEF_VERSION_B         2
+#define XYO_COFF_TO_DEF_VERSION_ABCD      2,0,0,20
+#define XYO_COFF_TO_DEF_VERSION_A         2
+#define XYO_COFF_TO_DEF_VERSION_B         0
 #define XYO_COFF_TO_DEF_VERSION_C         0
-#define XYO_COFF_TO_DEF_VERSION_D         19
-#define XYO_COFF_TO_DEF_VERSION_STR_ABCD  "1.2.0.19"
-#define XYO_COFF_TO_DEF_VERSION_STR       "1.2.0"
-#define XYO_COFF_TO_DEF_VERSION_STR_BUILD "19"
-#define XYO_COFF_TO_DEF_VERSION_BUILD     19
-#define XYO_COFF_TO_DEF_VERSION_HOUR      10
-#define XYO_COFF_TO_DEF_VERSION_MINUTE    20
-#define XYO_COFF_TO_DEF_VERSION_SECOND    4
-#define XYO_COFF_TO_DEF_VERSION_DAY       5
-#define XYO_COFF_TO_DEF_VERSION_MONTH     1
+#define XYO_COFF_TO_DEF_VERSION_D         20
+#define XYO_COFF_TO_DEF_VERSION_STR_ABCD  "2.0.0.20"
+#define XYO_COFF_TO_DEF_VERSION_STR       "2.0.0"
+#define XYO_COFF_TO_DEF_VERSION_STR_BUILD "20"
+#define XYO_COFF_TO_DEF_VERSION_BUILD     20
+#define XYO_COFF_TO_DEF_VERSION_HOUR      0
+#define XYO_COFF_TO_DEF_VERSION_MINUTE    6
+#define XYO_COFF_TO_DEF_VERSION_SECOND    39
+#define XYO_COFF_TO_DEF_VERSION_DAY       13
+#define XYO_COFF_TO_DEF_VERSION_MONTH     5
 #define XYO_COFF_TO_DEF_VERSION_YEAR      2015
-#define XYO_COFF_TO_DEF_VERSION_STR_DATETIME "2015-01-05 10:20:04"
+#define XYO_COFF_TO_DEF_VERSION_STR_DATETIME "2015-05-13 00:06:39"
 
 #ifndef XYO_RC
 
-namespace XYO{
-	namespace CoffToDef{
+namespace XYO {
+	namespace CoffToDef {
 
-		class Version{
+		class Version {
 			public:
 				static const char *getABCD();
 				static const char *getA();

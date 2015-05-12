@@ -260,10 +260,10 @@ Platform.buildLib=function(solution,project) {
 
 	make.build(fileLib);
 	if(Build.isLocal_) {
-		if(Shell.fileExists(fileLib)){
+		if(Shell.fileExists(fileLib)) {
 			Shell.copy(fileLib,solution.solutionPath_+"/"+project.name_+".static.lib");
 		};
-	};	
+	};
 };
 
 Platform.buildDll=function(solution,project) {
@@ -339,7 +339,7 @@ Platform.buildDll=function(solution,project) {
 
 	make.build(fileDll);
 	if(Build.isLocal_) {
-		if(Shell.fileExists(fileDll)){
+		if(Shell.fileExists(fileDll)) {
 			Shell.copy((.buildPath(solution)+"/"+project.name_+".lib").replace("\\","/"),solution.solutionPath_+"/"+project.name_+".lib");
 			Shell.copy(fileDll,solution.solutionPath_+"/"+project.name_+".dll");
 		};
@@ -418,7 +418,7 @@ Platform.buildExe=function(solution,project) {
 
 	make.build(fileExe);
 	if(Build.isLocal_) {
-		if(Shell.fileExists(fileExe)){
+		if(Shell.fileExists(fileExe)) {
 			Shell.copy(fileExe,solution.solutionPath_+"/"+project.name_+".exe");
 		};
 	};
@@ -1317,7 +1317,7 @@ Platform.writeProjectLocalDependencyDll=function(solution,project,full) {
 	file=.buildPath(solution)+"/"+solution.name_+"."+project.name_+".dll.local.dependency.js";
 	content+=".option(\"library-path\",Platform.buildPathX(\""+solution.name_+"\",\""+Build.variant_+"\"));\n";
 	content+=".option(\"include\",Platform.buildPathX(\""+solution.name_+"\",\""+Build.variant_+"\"));\n";
-	if(full){
+	if(full) {
 		content+=".option(\"library\",\""+project.name_+"\");\n";
 	};
 	content+=.processDependencyOption(solution,project,mode,true);
@@ -1338,7 +1338,7 @@ Platform.writeProjectLocalDependencyLib=function(solution,project,full) {
 	file=.buildPath(solution)+"/"+solution.name_+"."+project.name_+".lib.local.dependency.js";
 	content+=".option(\"library-path\",Platform.buildPathX(\""+solution.name_+"\",\""+Build.variant_+"\"));\n";
 	content+=".option(\"include\",Platform.buildPathX(\""+solution.name_+"\",\""+Build.variant_+"\"));\n";
-	if(full){
+	if(full) {
 		content+=".option(\"library\",\""+project.name_+".static\");\n";
 	};
 	content+=.processDependencyOption(solution,project,mode,true);
@@ -1392,7 +1392,7 @@ Platform.writeProjectDependencyDll=function(solution,project,mode,full) {
 	content+=".option(\"path\",Platform.installPathX(\""+solution.name_+"\",\""+mode+"\")+\"/bin\");\n";
 	content+=".option(\"library-path\",Platform.installPathX(\""+solution.name_+"\",\""+mode+"\")+\"/lib\");\n";
 	content+=".option(\"include\",Platform.installPathX(\""+solution.name_+"\",\""+mode+"\")+\"/include\");\n";
-	if(full){
+	if(full) {
 		content+=".option(\"library\",\""+project.name_+"\");\n";
 	};
 	content+=.processDependencyOption(solution,project,mode,false);
@@ -1412,7 +1412,7 @@ Platform.writeProjectDependencyLib=function(solution,project,mode,full) {
 	file=.buildPath(solution)+"/"+solution.name_+"."+project.name_+".lib.dependency.js";
 	content+=".option(\"library-path\",Platform.installPathX(\""+solution.name_+"\",\""+mode+"\")+\"/lib\");\n";
 	content+=".option(\"include\",Platform.installPathX(\""+solution.name_+"\",\""+mode+"\")+\"/include\");\n";
-	if(full){
+	if(full) {
 		content+=".option(\"library\",\""+project.name_+".static\");\n";
 	};
 	content+=.processDependencyOption(solution,project,mode,false);
@@ -1970,21 +1970,21 @@ Platform.installProject_=function(solution,project,mode) {
 
 Platform.buildClean=function(solution,project) {
 	Shell.removeDirRecursively(.buildPath(solution));
-	if(Build.isLocal_){
+	if(Build.isLocal_) {
 		var type_=.projectTypeX(project.type_);
-		if(type_=="lib"){
-			Shell.remove(solution.solutionPath_+"/"+project.name_+".static.lib");			
+		if(type_=="lib") {
+			Shell.remove(solution.solutionPath_+"/"+project.name_+".static.lib");
 			return;
-		};	
-		if(type_=="dll"){
+		};
+		if(type_=="dll") {
 			Shell.remove(solution.solutionPath_+"/"+project.name_+".lib");
 			Shell.remove(solution.solutionPath_+"/"+project.name_+".dll");
 			return;
-		};	
-		if(type_=="exe"){
+		};
+		if(type_=="exe") {
 			Shell.remove(solution.solutionPath_+"/"+project.name_+".exe");
 			return;
-		};	
+		};
 	};
 };
 

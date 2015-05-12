@@ -63,7 +63,7 @@
 
 		.option("sign","xyo-security");
 
-		.dependency("quantum-script","libquantum-script","lib");
+		.dependency("libquantum-script","libquantum-script","lib");
 		.dependencyProject("xyo-version","exe");
 	});
 

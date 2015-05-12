@@ -45,7 +45,7 @@ Build.parseCommandLine=function() {
 			found=false;
 			option=cmdS.substring(2);
 			if(option=="local") {
-				.isLocal_=true;				
+				.isLocal_=true;
 				continue;
 			};
 			++m;
