@@ -59,7 +59,7 @@ class Application :
 		XYO_XY_DEFINE_PRIVATE_COPY(Application);
 	protected:
 
-		static bool initExecutive(Executive *);
+		static void initExecutive(Executive *);
 
 		void showUsage();
 		void showLicence();
@@ -73,32 +73,23 @@ class Application :
 
 };
 
-bool Application::initExecutive(Executive *executive) {
+void Application::initExecutive(Executive *executive) {
 	//executive->configPrintStackTraceLimit=1;
-	if (executive->compileString(
-		    "\n"
-		    "function With(this_,proc_){\n"
-		    "\tproc_.call(this_);\n"
-		    "};\n"
-		    "function ForEach(what_,proc_,this_){\n"
-		    "\tfor(var key in what_){\n"
-		    "\t\tproc_.call(this_,key,what_[key]);\n"
-		    "\t};\n"
-		    "};\n"
-	    ) != 0) {
-		return false;
-	};
-	if (executive->compileString("Script.include(\"xyo-build.include/shell.js\");") != 0) {
-		return false;
-	};
-	if (executive->compileString("var Build={};") != 0) {
-		return false;
-	};
-	if (!executive->setVmFunction("Build.isError(flag)", InstructionBuild_isError, NULL)) {
-		return false;
-	};
+	executive->compileStringX(
+		"\n"
+		"function With(this_,proc_){\n"
+		"\tproc_.call(this_);\n"
+		"};\n"
+		"function ForEach(what_,proc_,this_){\n"
+		"\tfor(var key in what_){\n"
+		"\t\tproc_.call(this_,key,what_[key]);\n"
+		"\t};\n"
+		"};\n"
+		"Script.include(\"xyo-build.include/shell.js\");\n"
+		"var Build={};\n"
+	);
 
-	return true;
+	executive->setVmFunction("Build.isError(flag)", InstructionBuild_isError, NULL);
 };
 
 void Application::showUsage() {
@@ -212,7 +203,7 @@ int Application::main(int cmdN, char *cmdS[]) {
 	if(ExecutiveX::initExecutive(cmdN,cmdS,initExecutive)) {
 		if(ExecutiveX::executeString(script)) {
 			ExecutiveX::executeEnd();
-			if(isError){
+			if(isError) {
 				return -1;
 			};
 			return 0;

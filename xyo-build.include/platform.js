@@ -243,7 +243,7 @@ Platform.includePlatform=function(platformName) {
 	Script.include(xyoPlatform_);
 };
 
-Platform.touchIfExists=function(file){
+Platform.touchIfExists=function(file) {
 	Shell.touchIfExists(file);
 };
 
