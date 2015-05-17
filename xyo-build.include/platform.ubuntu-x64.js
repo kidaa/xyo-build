@@ -223,18 +223,18 @@ Platform.buildLib=function(solution,project) {
 
 	if(fileH.length) {
 		ForEach(fileC,function(key) {
-			make.target(fileC[key],fileH,make.cmdTouch,fileC[key]);
+			make.target(fileC[key],fileH,make.touchIfExists);
 		});
 
 		ForEach(fileCpp,function(key) {
-			make.target(fileCpp[key],fileH,make.cmdTouch,fileCpp[key]);
+			make.target(fileCpp[key],fileH,make.touchIfExists);
 		});
 
 	};
 
 	if(fileHpp.length) {
 		ForEach(fileCpp,function(key) {
-			make.target(fileCpp[key],fileHpp,make.cmdTouch,fileCpp[key]);
+			make.target(fileCpp[key],fileHpp,make.touchIfExists);
 		});
 	};
 
@@ -289,26 +289,26 @@ Platform.buildDll=function(solution,project) {
 
 	if(fileH.length) {
 		ForEach(fileC,function(key) {
-			make.target(fileC[key],fileH,make.cmdTouch,fileC[key]);
+			make.target(fileC[key],fileH,make.touchIfExists);
 		});
 
 		ForEach(fileCpp,function(key) {
-			make.target(fileCpp[key],fileH,make.cmdTouch,fileCpp[key]);
+			make.target(fileCpp[key],fileH,make.touchIfExists);
 		});
 
 		ForEach(fileRc,function(key) {
-			make.target(fileRc[key],fileH,make.cmdTouch,fileRc[key]);
+			make.target(fileRc[key],fileH,make.touchIfExists);
 		});
 
 	};
 
 	if(fileHpp.length) {
 		ForEach(fileCpp,function(key) {
-			make.target(fileCpp[key],fileHpp,make.cmdTouch,fileCpp[key]);
+			make.target(fileCpp[key],fileHpp,make.touchIfExists);
 		});
 
 		ForEach(fileRc,function(key) {
-			make.target(fileRc[key],fileHpp,make.cmdTouch,fileRc[key]);
+			make.target(fileRc[key],fileHpp,make.touchIfExists);
 		});
 	};
 
@@ -368,26 +368,26 @@ Platform.buildExe=function(solution,project) {
 
 	if(fileH.length) {
 		ForEach(fileC,function(key) {
-			make.target(fileC[key],fileH,make.cmdTouch,fileC[key]);
+			make.target(fileC[key],fileH,make.touchIfExists);
 		});
 
 		ForEach(fileCpp,function(key) {
-			make.target(fileCpp[key],fileH,make.cmdTouch,fileCpp[key]);
+			make.target(fileCpp[key],fileH,make.touchIfExists);
 		});
 
 		ForEach(fileRc,function(key) {
-			make.target(fileRc[key],fileH,make.cmdTouch,fileRc[key]);
+			make.target(fileRc[key],fileH,make.touchIfExists);
 		});
 
 	};
 
 	if(fileHpp.length) {
 		ForEach(fileCpp,function(key) {
-			make.target(fileCpp[key],fileHpp,make.cmdTouch,fileCpp[key]);
+			make.target(fileCpp[key],fileHpp,make.touchIfExists);
 		});
 
 		ForEach(fileRc,function(key) {
-			make.target(fileRc[key],fileHpp,make.cmdTouch,fileRc[key]);
+			make.target(fileRc[key],fileHpp,make.touchIfExists);
 		});
 	};
 

@@ -29,6 +29,7 @@ set DEF= %DEF% /DXYO_BUILD_NO_VERSION
 set DEF= %DEF% /D_CRT_SECURE_NO_WARNINGS
 
 rem set DEF= %DEF% /DXYO_MEMORY_LEAK_DETECTOR
+rem set DEF= %DEF% /DXYO_MEMORYPOOL_FORCE_ACTIVE_MEMORY_AS_SYSTEM
 rem set DEF= %DEF% /DQUANTUM_SCRIPT_DEBUG_ASM
 rem set DEF= %DEF% /DQUANTUM_SCRIPT_DEBUG_RUNTIME
 rem set DEF= %DEF% /DQUANTUM_SCRIPT_DEBUG_LIBSTD_INIT
@@ -38,7 +39,7 @@ rem set DEF= %DEF% /DQUANTUM_SCRIPT_SINGLE_FIBER
 rem set DEF= %DEF% /DQUANTUM_SCRIPT_SINGLE_THREAD
 rem set DEF= %DEF% /DQUANTUM_SCRIPT_DISABLE_CLOSURE
 
-rem l /Zi /MDd /EHsc %DEF% %INC% %SRC% /link ws2_32.lib user32.lib
+rem cl /Zi /MDd /EHsc %DEF% %INC% %SRC% /link ws2_32.lib user32.lib
 cl /MT /O2 /Ox /Oy /GS- /GL /GA /EHsc /GR- /TP  %DEF%  %INC% %SRC% /link ws2_32.lib user32.lib
 rem cl /RTCs /RTCu /MD  /Oy /GS /GL /GA /EHsc /GR /TP  %DEF%  %INC% %SRC% /link ws2_32.lib user32.lib
 

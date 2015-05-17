@@ -7,6 +7,8 @@
 // The MIT License (MIT) <http://opensource.org/licenses/MIT>
 //
 
+Script.requireExtension("Shell");
+
 Shell.cmd=function(command) {
 	Console.writeLn(command);
 	if(Shell.system(command)) {

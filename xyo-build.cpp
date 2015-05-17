@@ -179,11 +179,11 @@ int Application::main(int cmdN, char *cmdS[]) {
 	       "};\n"
 	       "BuildError.prototype=new Error();\n"
 	       "function ___main(){\n"
+	       "\tScript.include(\"xyo-build.include/shell.js\");\n"
 	       "\tScript.include(\"xyo-build.include/build.js\");\n"
 	       "\tif(Shell.fileExists(\""<<scriptConfig<<"\")){\n"
 	       "\t\tScript.include(\""<<scriptConfig<<"\");\n"
 	       "\t};\n"
-	       "\tScript.include(\"xyo-build.include/make.js\");\n"
 	       "\tScript.include(\"xyo-build.include/project.js\");\n"
 	       "\tScript.include(\"xyo-build.include/solution.js\");\n"
 	       "\tScript.include(\"xyo-build.include/platform.js\");\n"
@@ -200,7 +200,7 @@ int Application::main(int cmdN, char *cmdS[]) {
 	       "\t}catch(e){\n"
 	       "\t\tBuild.isError(true);\n"
 	       "\t\tConsole.writeLn(e.toString());\n"
-	       "\t\tif(e instanceof BuildError){}else{\n"
+	       "\t\tif(e instanceof BuildError|| e instanceof MakeError){}else{\n"
 	       "\t\t\tConsole.write(e.stackTrace);\n"
 	       "\t\t};\n"
 	       "\t};\n"
@@ -208,10 +208,13 @@ int Application::main(int cmdN, char *cmdS[]) {
 	       "___exec();\n";
 
 
-
+	isError=false;
 	if(ExecutiveX::initExecutive(cmdN,cmdS,initExecutive)) {
 		if(ExecutiveX::executeString(script)) {
 			ExecutiveX::executeEnd();
+			if(isError){
+				return -1;
+			};
 			return 0;
 		};
 	};

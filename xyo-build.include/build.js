@@ -7,6 +7,11 @@
 // The MIT License (MIT) <http://opensource.org/licenses/MIT>
 //
 
+Script.requireExtension("File");
+Script.requireExtension("Shell");
+Script.requireExtension("Make");
+Script.requireExtension("MD5");
+
 Build.solution_= {};
 Build.variant_="release";
 Build.mode_="build";
