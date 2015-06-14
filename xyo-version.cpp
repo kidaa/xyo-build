@@ -33,7 +33,7 @@ using namespace XYO::XO;
 
 class Application :
 	public virtual IMain {
-		XYO_XY_DEFINE_PRIVATE_COPY(Application);
+		XYO_XY_DISALLOW_COPY_ASSIGN_MOVE(Application);
 	protected:
 
 		String applicationName;
@@ -85,8 +85,6 @@ class Application :
 };
 
 
-
-
 String Application::strStrip(String str) {
 	return StringX::trimWithElement(str, "\r\n\t ");
 };
@@ -123,7 +121,7 @@ bool Application::saveVarFile(char *outFile, TRedBlackTree<String, String > &myV
 	FILE *out;
 	out = fopen(outFile, "wt");
 	if (out != NULL) {
-		TXRedBlackTreeNode<String, String > *scan;
+		TYRedBlackTreeNode<String, String > *scan;
 		for (scan = myVar.begin(); scan; scan = scan->succesor()) {
 			fprintf(out, "%s=%s\r\n", scan->key.value(), scan->value.value());
 		};

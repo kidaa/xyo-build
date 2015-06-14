@@ -11,6 +11,7 @@ Script.requireExtension("File");
 Script.requireExtension("Shell");
 Script.requireExtension("Make");
 Script.requireExtension("MD5");
+Script.requireExtension("Base64");
 
 Build.solution_= {};
 Build.variant_="release";

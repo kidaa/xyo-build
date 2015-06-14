@@ -27,7 +27,7 @@ namespace {
 
 	class Application :
 		public virtual IMain {
-			XYO_XY_DEFINE_PRIVATE_COPY(Application);
+			XYO_XY_DISALLOW_COPY_ASSIGN_MOVE(Application);
 		protected:
 
 			void getCoffSymbolsFromFile(PTSTR pszFileName, TRedBlackTreeOne<String > &retV, int showCoffSymbols);
@@ -108,7 +108,7 @@ namespace {
 		out = fopen(pszFileName, "wb");
 		if (out != NULL) {
 			fprintf(out, "%s", "LIBRARY\r\nEXPORTS\r\n");
-			TXRedBlackTreeNodeOne<String > *i;
+			TYRedBlackTreeNodeOne<String > *i;
 			for (i = inList.begin(); i; i = i->succesor()) {
 				if (StringBase::beginWith(i->key, "__real@")) {
 					continue;
@@ -204,7 +204,7 @@ namespace {
 		char *defFile;
 		int coffMode;
 		int showCoffSymbols;
-		TXRedBlackTreeNodeOne<String> *coff;
+		TYRedBlackTreeNodeOne<String> *coff;
 
 		showCoffSymbols = 0;
 		defFile = "out.def";

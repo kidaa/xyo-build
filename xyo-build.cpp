@@ -56,7 +56,7 @@ QUANTUM_SCRIPT_INSTRUCTION_IMPLEMENT(Build_isError) {
 
 class Application :
 	public virtual IMain {
-		XYO_XY_DEFINE_PRIVATE_COPY(Application);
+		XYO_XY_DISALLOW_COPY_ASSIGN_MOVE(Application);
 	protected:
 
 		static void initExecutive(Executive *);
